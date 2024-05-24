@@ -1,13 +1,13 @@
 # DEFAULT /PREDETERMINADO si no se especifica entorno
 spring:
   application:
-    name: UserManager
+    name: PersonManager
   banner:
     location: JPD.txt
   datasource:
-    url: jdbc:postgresql://pctaller.ct0242yuovwd.eu-west-3.rds.amazonaws.com:5432/pctaller
-    username: josepe
-    password: Fhl7OEGCfKGvYN55mcPo
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PSSWRD}
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -17,7 +17,7 @@ spring:
         "[show_sql]": true
         "[default_schema]": pctaller
 server:
-  port: 5555 
+  port: 6666 
 logging:
   level:
-   "[org.springframework.web]": TRACE
+   "[org.springframework.web]": INFO
