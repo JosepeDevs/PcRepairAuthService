@@ -1,7 +1,7 @@
 # DEFAULT /PREDETERMINADO si no se especifica entorno
 spring:
   application:
-    name: PersonManager
+    name: AuthManager
   banner:
     location: JPD.txt
   datasource:
@@ -21,3 +21,12 @@ server:
 logging:
   level:
    "[org.springframework.web]": INFO
+   "[org.springframework.security]": DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: 502E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 15 #minutes
+      refresh-token:
+        expiration: 60 # minutes
