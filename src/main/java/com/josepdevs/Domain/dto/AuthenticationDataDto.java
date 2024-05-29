@@ -12,12 +12,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
-public class UserDto {
+public class AuthenticationDataDto {
 	
+	private String username;
     private String email;
     private String psswrd;
-    private String name;
-    private String role;
+    private String psswrdSalt;
+    private String registrationToken;
+    private String psswrdChangeToken;
+    private String psswrdChangeIssueDate;
+    private String loginToken;
     private boolean active;
     
 }

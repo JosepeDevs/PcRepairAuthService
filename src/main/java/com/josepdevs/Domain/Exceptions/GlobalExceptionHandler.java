@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
@@ -25,11 +26,18 @@ public class GlobalExceptionHandler {
     
     //////////BUILT-IN EXCEPTIONS HANDLING TO NOW SHOW STACKTRACE
     
-	@ExceptionHandler(Exception.class)
+	/*@ExceptionHandler(Exception.class)
 	public ResponseEntity globalExceptionManager(Exception ex) {
 		Map<String, String> errorDetails = new HashMap<>();
         errorDetails.put("Exception", "A problem happened.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
+    }*/
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity myBadCredentialsException(BadCredentialsException ex) {
+		Map<String, String> errorDetails = new HashMap<>();
+        errorDetails.put("Credentials", "Review your credentials as they could not be validated or were missing");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDetails);
     }
 	@ExceptionHandler(NoResourceFoundException.class)
 	public ResponseEntity myNoResourceFoundException(NoResourceFoundException ex) {

@@ -1,5 +1,8 @@
 package com.josepdevs.Domain.dto.valueobjects;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 import com.josepdevs.Domain.Exceptions.PasswordNotValidException;
 
 import lombok.Getter;
@@ -8,7 +11,17 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Psswrd {
+		
+    private static final Random RANDOM = new SecureRandom();
+    private static final int ITERATIONS = 10000;
+    private static final int KEY_LENGTH = 256;
 	
+    public static byte[] getNextSalt() {
+        byte[] saltArray = new byte[16];
+        RANDOM.nextBytes(saltArray);
+        return saltArray;
+    }
+    
 	private String psswrd;
 	
 	//in the constructor we check all we want and throw personalized exceptions as required
