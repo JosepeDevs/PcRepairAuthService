@@ -7,6 +7,8 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,15 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
+@ConfigurationProperties(prefix = "myconfig.security.jwt")
 public class JwtTokenReaderAndIssuerService {
-
-	private final static String SECRET_KEY = "502E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+	
+	//this make it take the value from the application.yml
+	@Value("${myconfig.security.jwt.SECRET_KEY}")
+	private  String SECRET_KEY;
+	
+	@Value("${myconfig.security.jwt.expirationMinutes}")
+	private int expirationMinutes;
 	
 	private SecretKey getSecretSigningKey() {
 		//Base64 is a binary-to-text used FOR TRANSPORT
@@ -80,7 +88,7 @@ public class JwtTokenReaderAndIssuerService {
 				.claims(extraClaims)
 				.subject(userDetails.getUsername())
 				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date( System.currentTimeMillis() + 1 * 1000 * 60 * 9) ) //9 minutes expiration
+				.expiration(new Date( System.currentTimeMillis() + 1 * 1000 * 60 * expirationMinutes) ) //9 minutes expiration
 				.signWith(getSecretSigningKey(), Jwts.SIG.HS256)
 				.compact();
 	}
