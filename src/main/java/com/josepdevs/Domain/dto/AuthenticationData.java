@@ -15,12 +15,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
@@ -29,6 +32,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder 
+@Data
 public class AuthenticationData implements UserDetails{
 
 	/**
@@ -69,12 +73,20 @@ public class AuthenticationData implements UserDetails{
 	@Column(name = "active")
 	private boolean	active;
 
-
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.toString()));
+	    return List.of(new SimpleGrantedAuthority(role.toString()));
 	}
-
+	
+	/*//This would be used if more than one role is allowed
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+	    return role.stream()
+	                .map(role -> new SimpleGrantedAuthority(role.name()))
+	                .collect(Collectors.toList());
+	}
+	 */
 	@Override
 	public String getUsername() {
 		return username;

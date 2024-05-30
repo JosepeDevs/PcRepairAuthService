@@ -39,8 +39,8 @@ public class FilterAndWhiteListConfig {
            //in that path controller we will only place endpoints that do nor require auth such as register or login
            //We do not require a token for register nor for "requesting the login token" what right now i am calling "login" in reality is authenticate 
            .authorizeHttpRequests(registry -> {
-        	   registry.requestMatchers("api/v1/auth/**", "otra/url").permitAll(); //permitir tds los que tengan una consul
-        	   registry.requestMatchers("api/v1/auth/admin/**").hasRole("ADMIN"); //solo pueden consultar eso administradores
+        	   registry.requestMatchers("api/v1/noauth/**", "otra/url").permitAll(); //permitir tds los que tengan una rata especifica
+        	   registry.requestMatchers("api/v1/admin/**").hasAuthority("ADMIN");//solo pueden consultar eso administradores
         	   registry.anyRequest().authenticated();
            })         
            //The session should be stateless, DO NOT SAVE ANYTHING IN THE SESSION!

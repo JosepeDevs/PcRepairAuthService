@@ -10,10 +10,11 @@ import com.josepdevs.Application.Login;
 import com.josepdevs.Domain.dto.AuthenticationRequest;
 import com.josepdevs.Domain.dto.AuthenticationResponse;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/v1/noauth")
 @RequiredArgsConstructor
 public class LoginController {
 

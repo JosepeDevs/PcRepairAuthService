@@ -5,9 +5,9 @@ spring:
   banner:
     location: JPD.txt
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}  
-    password: ${DB_PSSWRD}
+    url: ${DB_URL} # this is from AWS RDS
+    username: ${DB_USER}  # this is from AWS RDS
+    password: ${DB_PSSWRD} # this is from AWS RDS
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -23,6 +23,7 @@ logging:
    "[org.springframework.web]": INFO
    "[org.springframework.security]": DEBUG
 
+# This is a custom setting for Jwt that I need in my app but I want to keep secured
 myconfig:
   security:
     jwt:

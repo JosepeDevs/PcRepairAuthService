@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.josepdevs.Domain.service.JwtTokenReaderAndIssuerService;
+import com.josepdevs.Domain.service.JwtTokenReaderService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtValidationFilter extends OncePerRequestFilter {
 
-	private final JwtTokenReaderAndIssuerService jwtTokenReaderService;
+	private final JwtTokenReaderService jwtTokenReaderService;
 	private final UserDetailsService userDetailsService;
 	
 	@Override
@@ -33,19 +33,23 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		final String authorizationHeader = request.getHeader("Authorization");
 		final String jwtToken;
 		final String username;
+		
 		if(authorizationHeader == null || ! authorizationHeader.startsWith("Bearer ")) {
+			//if not authorized
 			filterChain.doFilter(request, response);
 			return; //this is included to stop execution after calling filterChain.
 		}
-		jwtToken = authorizationHeader.substring(7);//"Bearer " are 7 digits, with this we get in a string the token value
-		//we need a class to manipulate the JwtToken
+		
+		//"Bearer " are 7 digits, with this we get in a string the token value
+		jwtToken = authorizationHeader.substring(7).replace (" ","");
+		//we need a class to read from the JwtToken
 		username = jwtTokenReaderService.extractUsername(jwtToken); 
 		//if already authenticated skip all the generation process. If authentication is null, the user is not authenticated yet
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null ) {
 			//get user details from database
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			if( jwtTokenReaderService.isTokenUserDetailsValid(jwtToken, userDetails) ){
-				//when creating the user we do not have credentials
+			if( jwtTokenReaderService.isTokenUserDataValidAndNotExpired(jwtToken, userDetails) ){
+				//by being able to create this token we have secured this request
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				//convert HttpServlet request class into WebAuthenticationDetails Spring class equivalent to request
 				//therefore this line bellow set details with all the infomration from the request (using all info

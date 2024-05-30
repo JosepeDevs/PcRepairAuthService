@@ -2,40 +2,28 @@ package com.josepdevs.Domain.service;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.josepdevs.Domain.dto.valueobjects.Role;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 
 @Service
-@ConfigurationProperties(prefix = "myconfig.security.jwt")
-public class JwtTokenReaderAndIssuerService {
+@AllArgsConstructor
+public class JwtTokenReaderService {
 	
-	//this make it take the value from the application.yml
-	@Value("${myconfig.security.jwt.SECRET_KEY}")
-	private  String SECRET_KEY;
-	
-	@Value("${myconfig.security.jwt.expirationMinutes}")
-	private int expirationMinutes;
-	
-	private SecretKey getSecretSigningKey() {
-		//Base64 is a binary-to-text used FOR TRANSPORT
-		byte[] keyByte = Decoders.BASE64.decode(SECRET_KEY);
-		//Hash-based Message Authentication Code, later used to verify the sender
-		return Keys.hmacShaKeyFor(keyByte);
-	}
+	JwtTokenIssuerService jwtTokenIssuerService;
 	
 	/**
 	 * parse a JSON Web Token (JWT) and extract all its claims
@@ -43,7 +31,7 @@ public class JwtTokenReaderAndIssuerService {
 	 * @return Claims (all the payLoad/Body)
 	 */
 	private Claims extractAllClaims(String jwtToken) {
-	    SecretKey secretSigningKey = getSecretSigningKey();
+	    SecretKey secretSigningKey = jwtTokenIssuerService.getSecretSigningKey();
 
 	    //montamos el parser, añadiendo la secret key
 	    JwtParser jwsParser = Jwts .parser().verifyWith(secretSigningKey).build();
@@ -77,32 +65,47 @@ public class JwtTokenReaderAndIssuerService {
 	}
 	
 	/**
-	 * 
-	 * @param extraClaims (for example authorities)
-	 * @param userDetails 
-	 * @return String token value with claims included
+	 * Given a token extracts all roles as a List of Role
+	 * @param jwtToken
+	 * @return
 	 */
-	public String generateToken ( Map<String,Object> extraClaims, UserDetails userDetails) {
-		return Jwts
-				.builder()
-				.claims(extraClaims)
-				.subject(userDetails.getUsername())
-				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date( System.currentTimeMillis() + 1 * 1000 * 60 * expirationMinutes) ) //9 minutes expiration
-				.signWith(getSecretSigningKey(), Jwts.SIG.HS256)
-				.compact();
-	}
+	public  Map<String,Object> extractRolesAndPermissions(String jwtToken) {
+		final Claims allClaims = extractAllClaims(jwtToken);
+        List<?> rolesRaw = (List<?>) allClaims.get("roles");
 
-	/**
-	 *todo allow extraclaims
-	 * create token without any extraclaims
-	 * @param userDetails
-	 * @return String with generated token (no extraclaims, only user details)
-	 */
-	public String generateToken(UserDetails userDetails) {
-		return generateToken( new HashMap<>() , userDetails );
-	}
-
+        // Check if the retrieved list is not null and contains only Role instances
+        if (rolesRaw == null || ! rolesRaw.stream().allMatch(obj -> obj instanceof Role)) {
+        	// if null or if not all objects in list are Roles return empty map (no extra claims will be added)
+        	return new HashMap<>();
+        } else {
+        	// Perform the unchecked cast safely knowing all elements are Role instances
+        	List<Role> roles = (List<Role>) rolesRaw;
+        	Map<String,Object> extraClaims = new HashMap<>();
+        	StringBuilder rolesSB = new StringBuilder();
+        	StringBuilder permissionsSB = new StringBuilder();
+        	//builds something like "User, Editor," includes a comma always at the end too
+        	for (Role role : roles){
+        		rolesSB.append(role.toString());
+        		rolesSB.append(", ");
+        		permissionsSB.append(role.getPermissions());
+        		permissionsSB.append(", ");
+        	};
+        	//remove the comma in the last position
+        	int lastRoleIndex = rolesSB.length() - 1;
+        	if (lastRoleIndex >= 0) {
+        		rolesSB.deleteCharAt(lastRoleIndex);
+        	}
+        	//remove the comma in the last position
+        	int lastPermissionIndex = permissionsSB.length() - 1;
+        	if (lastPermissionIndex >= 0) {
+        		permissionsSB.deleteCharAt(lastPermissionIndex);
+        	}
+        	extraClaims.put("Roles", rolesSB.toString());
+        	extraClaims.put("Permissions", permissionsSB.toString());
+        	return extraClaims;
+        }	
+    }
+	
 	/**
 	 * Given a token, extract expiration, the type hander will make it to a Date type
 	 * @param jwtToken
@@ -128,7 +131,7 @@ public class JwtTokenReaderAndIssuerService {
 	 * @param userdetails
 	 * @return
 	 */
-	public boolean isTokenUserDetailsValid(String jwtToken, UserDetails userDetails) {
+	public boolean isTokenUserDataValidAndNotExpired(String jwtToken, UserDetails userDetails) {
 		final String username = extractUsername(jwtToken);
 		return (username.equals(userDetails.getUsername()) &&  ! isTokenExpired(jwtToken) );
 	}

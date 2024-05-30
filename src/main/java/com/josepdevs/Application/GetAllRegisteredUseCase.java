@@ -1,10 +1,11 @@
 package com.josepdevs.Application;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.josepdevs.Domain.Exceptions.InadequateRoleException;
 import com.josepdevs.Domain.Exceptions.UserNotFoundException;
 import com.josepdevs.Domain.dto.AuthenticationData;
 import com.josepdevs.Domain.service.JwtTokenReaderService;
@@ -14,27 +15,21 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PatchPassword {
+public class GetAllRegisteredUseCase {
 
 	private final AuthJpaRepository repository;
 	private final JwtTokenReaderService jwtReaderService;
-	private final PasswordEncoder passwordEncoder;
 
-	public boolean patchPassword(String jwtToken, String newpassword) {
-		//here is being throw the error
+	public List<AuthenticationData> getAll(String jwtToken) {
+		
 		String username = jwtReaderService.extractUsername(jwtToken);
 		Optional<AuthenticationData> userDataAuth = repository.findByUsername(username); 
 		AuthenticationData existingUser = userDataAuth.orElseThrow( () ->
 		new UserNotFoundException("ha intentado cambiuar la contraseña de un usuario que no existe o el token con las credenciales no lo contenia.", username) );	
-		existingUser.setPsswrd(passwordEncoder.encode(newpassword));
-		
-		AuthenticationData savedUser = repository.save(existingUser);
-		if(savedUser == existingUser) {
-			return false;
+		if(existingUser.getRole().toString().equals("ADMIN")){
+			return repository.findAll();
 		} else {
-			return true;
+			throw new InadequateRoleException("You do not have the required authority to access this resource.", existingUser.getRole().toString());
 		}
 	}
-	
-
 }
