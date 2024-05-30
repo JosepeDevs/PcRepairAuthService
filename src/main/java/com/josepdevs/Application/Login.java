@@ -30,10 +30,10 @@ public class Login {
 	    var userDataAuth = repository.findByUsername(request.getUsername()).orElseThrow(); // throws NoSuchElementException
 	    
 	    // domain logic forces one role per user then it would be this:
-	    Role roles = userDataAuth.getRole();
-	    String permissions = roles.getPermissions();
-	    Map<String, Object> extraClaims = new HashMap<>();
+	    //Role role = Role.valueOf(userDataAuth.getRole());
 	    //By planning ahead which endopoints are allowed for each role I can avoid having to implement permissions, thank you OAS
+	    //String permissions = roles.getPermissions();
+	    Map<String, Object> extraClaims = new HashMap<>();
 	    //extraClaims.put("permissions", permissions);
 	    extraClaims.put("authorities", userDataAuth.getAuthorities()); 
 	    

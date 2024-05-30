@@ -39,7 +39,7 @@ public class Register {
 					.email(request.getEmail())
 					.username(username)
 					.psswrd(passwordEncoder.encode(request.getPsswrd()))
-					.role(Role.USER)
+					.role("USER")
 					.build();
 			repository.save(userAuthData);
 			var jwtToken = jwtService.generateBasicToken(userAuthData);

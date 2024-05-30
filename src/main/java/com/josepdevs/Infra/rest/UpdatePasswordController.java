@@ -25,11 +25,11 @@ public class UpdatePasswordController {
 			//"Bearer " are 7 digits, with this we get in a string the token value and replace white spaces, just in case
 			jwtToken = jwtToken.substring(7).replace (" ","");
 
-			boolean successfulOpperation = patchPasswordUseCase.patchPassword(jwtToken, newpsswrd);
-			if(	successfulOpperation ) {
-		        return ResponseEntity.status(HttpStatus.ACCEPTED).body(true);
+			boolean psswrdChanged = patchPasswordUseCase.patchPassword(jwtToken, newpsswrd);
+			if(	psswrdChanged ) {
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
 			} else {
-		        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(false);
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 			}
 
 		}

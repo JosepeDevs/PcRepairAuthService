@@ -13,13 +13,9 @@ import com.josepdevs.Domain.dto.valueobjects.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -54,9 +50,8 @@ public class AuthenticationData implements UserDetails{
 	@Column(name = "psswrd")
 	private String psswrd;
 	
-	@Enumerated(EnumType.STRING)
 	@Column(name = "role")
-	private Role role;
+	private String role;
 
 	@Column(name = "psswrd_salt")
 	private String psswrdSalt;
@@ -73,6 +68,22 @@ public class AuthenticationData implements UserDetails{
 	@Column(name = "active")
 	private boolean	active;
 
+	
+	public AuthenticationData(UUID idUser, String username, String email, String psswrd,
+							Role role, String psswrdSalt, String registrationToken,
+							String psswrdChangeToken, String 	psswrdTokenIssuedate, boolean active) {
+		
+		   this.idUser = idUser;
+	        this.username = username;
+	        this.email = email;
+	        this.psswrd = psswrd;
+	        this.role = role.name();
+	        this.psswrdSalt = psswrdSalt;
+	        this.registrationToken = registrationToken;
+	        this.psswrdChangeToken = psswrdChangeToken;
+	        this.psswrdTokenIssuedate = psswrdTokenIssuedate;
+	        this.active = active;
+	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -96,6 +107,5 @@ public class AuthenticationData implements UserDetails{
 	public String getPassword() {
 		return psswrd;
 	}
-
-
+	
 }

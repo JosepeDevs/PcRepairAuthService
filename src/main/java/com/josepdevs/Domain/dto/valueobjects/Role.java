@@ -15,4 +15,8 @@ public enum Role {
     public String getPermissions() {
         return permissions;
     }
+    
+    public String getRoleName(Role role) {
+        return role.name();
+    }
 }
