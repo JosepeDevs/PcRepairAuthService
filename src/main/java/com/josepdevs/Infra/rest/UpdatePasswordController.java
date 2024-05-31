@@ -27,9 +27,9 @@ public class UpdatePasswordController {
 
 			boolean psswrdChanged = patchPasswordUseCase.patchPassword(jwtToken, newpsswrd);
 			if(	psswrdChanged ) {
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
-			} else {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+			} else {
+				return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
 			}
 
 		}

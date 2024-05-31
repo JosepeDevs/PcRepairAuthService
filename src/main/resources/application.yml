@@ -29,7 +29,6 @@ myconfig:
     jwt:
       SECRET_KEY: ${SECRET_KEY}
       # In prod I would not make this, but since this is a personal project and in case I lose access to this terminal
-      # 502E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
       expirationMinutes: 15 #minutes
       #refresh-token:
       #  expiration: 60 # minutes
