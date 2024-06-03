@@ -25,7 +25,7 @@ public class PatchPassword {
 		String username = jwtReaderService.extractUsername(jwtToken);
 		Optional<AuthenticationData> userDataAuth = repository.findByUsername(username); 
 		AuthenticationData existingUser = userDataAuth.orElseThrow( () ->
-		new UserNotFoundException("ha intentado cambiuar la contraseña de un usuario que no existe o el token con las credenciales no lo contenia.", username) );	
+		new UserNotFoundException("ha intentado cambiuar la contraseña de un usuario que no existe o el token con las credenciales no lo contenia.", "username") );	
 		existingUser.setPsswrd(passwordEncoder.encode(newpassword));
 		
 		AuthenticationData savedUser = repository.save(existingUser);

@@ -25,11 +25,11 @@ public class GetAllRegisteredUseCase {
 		String username = jwtReaderService.extractUsername(jwtToken);
 		Optional<AuthenticationData> userDataAuth = repository.findByUsername(username); 
 		AuthenticationData existingUser = userDataAuth.orElseThrow( () ->
-		new UserNotFoundException("ha intentado cambiuar la contraseña de un usuario que no existe o el token con las credenciales no lo contenia.", username) );	
+		new UserNotFoundException("ha intentado cambiuar la contraseña de un usuario que no existe o el token con las credenciales no lo contenia.", "username") );	
 		if(existingUser.getRole().toString().equals("ADMIN")){
 			return repository.findAll();
 		} else {
-			throw new InadequateRoleException("You do not have the required authority to access this resource.", existingUser.getRole().toString());
+			throw new InadequateRoleException("You do not have the required authority to access this resource.", "Role");
 		}
 	}
 }

@@ -17,26 +17,26 @@ public class GlobalExceptionHandler {
 	
 	//MY CUSTOMIZED EXCEPTIONS
 	
-    @ExceptionHandler(MyRuntimeException.class)
+    @ExceptionHandler(MyRuntimeException.class) 
     public ResponseEntity handleMyExceptions(MyRuntimeException ex) {
         Map<String, String> errorDetails = new HashMap<>();
-        errorDetails.put("The attribute with value: '"+ex.getIllegalAttributeValue()+"' was not valid", ex.getMyErrorMessage());
+        errorDetails.put("The attribute with name: '"+ex.getIllegalAttributeName()+"' was not valid", ex.getMyErrorMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
     
     
     //////////BUILT-IN EXCEPTIONS HANDLING TO NOW SHOW STACKTRACE
     
-    //COMMENT THIS EXCEPTION WHEN DEBUGGING TO KNOW EXACT EXCEPTION
     //UNCOMMENT THIS WHEN UPLOADING TO PROD (we do not want to expose info to external clients)
-    /*
+    
+    //COMMENT THIS EXCEPTION WHEN DEBUGGING TO KNOW EXACT EXCEPTION
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity globalExceptionManager(Exception ex) {
 		Map<String, String> errorDetails = new HashMap<>();
         errorDetails.put("Exception", "A problem happened.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
-	*/
+	
     
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity myBadCredentialsException(BadCredentialsException ex) {

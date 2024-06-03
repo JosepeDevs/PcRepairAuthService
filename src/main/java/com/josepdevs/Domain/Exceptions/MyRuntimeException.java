@@ -7,15 +7,15 @@ public class MyRuntimeException extends RuntimeException {
 	
 	private static final long serialVersionUID = 1L;
 	private String myErrorMessage;
-	private String illegalAttributeValue;
+	private String illegalAttributeName;
 	
 	//pasamos el mensaje a excepción padre y logeamos el error
-	public MyRuntimeException(String myErrorMessage, String illegalAttributeValue) {
+	public MyRuntimeException(String myErrorMessage, String illegalAttributeName) {
         super(myErrorMessage);
-        this.illegalAttributeValue = illegalAttributeValue;
+        this.illegalAttributeName = illegalAttributeName;
         this.myErrorMessage = myErrorMessage;
         
-        log.error(myErrorMessage,illegalAttributeValue);
+        log.error(myErrorMessage,illegalAttributeName);
     }
 	
 	public MyRuntimeException(String message) {
@@ -25,8 +25,8 @@ public class MyRuntimeException extends RuntimeException {
 	public String getMyErrorMessage() {
 		return this.myErrorMessage;
 	}
-	public String getIllegalAttributeValue() {
-		return this.illegalAttributeValue;
+	public String getIllegalAttributeName() {
+		return this.illegalAttributeName;
 	}
 	
 }

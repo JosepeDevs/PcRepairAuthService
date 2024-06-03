@@ -31,9 +31,9 @@ public class Register {
 		String email = request.getEmail();
 		
 		if(repository.findByUsername(username).isPresent()) {
-			throw new UserAlreadyExistsException("That username is not available.", username);
+			throw new UserAlreadyExistsException("That username is not available.", "username");
 		} else if(repository.findByEmail(email).isPresent()) {
-			throw new UserAlreadyExistsException("That email is not available.", email);
+			throw new UserAlreadyExistsException("That email is not available.", "email");
 		} else {
 			AuthenticationData userAuthData = AuthenticationData.builder()
 					.email(request.getEmail())

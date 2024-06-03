@@ -27,16 +27,16 @@ public class PatchRoleUseCase {
 		String username = jwtReaderService.extractUsername(jwtToken);
 		Optional<AuthenticationData> authenticatedAdmin = repository.findByUsername(username); 
 		AuthenticationData existingAdmin = authenticatedAdmin.orElseThrow( () ->
-		new UserNotFoundException("You tried to access a user that was missing or not found in our systems.", id.toString()) );	
+		new UserNotFoundException("You tried to access a user that was missing or not found in our systems.", "id") );	
 		
 		//check if user to be changed exists
 		Optional<AuthenticationData> userToBeChanged = repository.findById(id); 
 		AuthenticationData existingUserToBeChanged = userToBeChanged.orElseThrow( () ->
-		new UserNotFoundException("You tried to access a user that was missing or not found in our systems.", username) );	
+		new UserNotFoundException("You tried to access a user that was missing or not found in our systems.", "username") );	
 
 		//check if the token is from an ADMIN
 		if(! existingAdmin.getRole().toString().equals("ADMIN")){
-			throw new InadequateRoleException("You do not have the required authority to access this resource.", existingAdmin.getRole());
+			throw new InadequateRoleException("You do not have the required authority to access this resource.", "existingAdmin");
 		} else {
 			String rolInicial = existingUserToBeChanged.getRole();
 			existingUserToBeChanged.setRole(role);
