@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.josepdevs.Domain.dto.AuthenticationData;
+import com.josepdevs.Domain.entities.AuthenticationData;
 
 public interface AuthJpaRepository extends JpaRepository<AuthenticationData, UUID> {
 //sin implementación salvvo que se quiera algo personalizado, solo para poder llamar a los métodos de JPARepo

@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.josepdevs.Domain.dto.AuthenticationData;
+import com.josepdevs.Domain.entities.AuthenticationData;
 import com.josepdevs.Domain.repository.AuthRepository;
 import com.josepdevs.Infra.output.AuthJpaRepository;
 

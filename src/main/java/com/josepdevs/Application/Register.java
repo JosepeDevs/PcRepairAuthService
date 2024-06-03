@@ -6,10 +6,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.josepdevs.Domain.Exceptions.UserAlreadyExistsException;
-import com.josepdevs.Domain.dto.AuthenticationData;
 import com.josepdevs.Domain.dto.AuthenticationResponse;
 import com.josepdevs.Domain.dto.RegisterRequest;
 import com.josepdevs.Domain.dto.valueobjects.Role;
+import com.josepdevs.Domain.entities.AuthenticationData;
 import com.josepdevs.Domain.service.JwtTokenIssuerService;
 import com.josepdevs.Infra.output.AuthJpaRepository;
 

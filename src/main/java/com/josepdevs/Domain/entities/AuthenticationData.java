@@ -1,4 +1,4 @@
-package com.josepdevs.Domain.dto;
+package com.josepdevs.Domain.entities;
 
 
 import java.util.Collection;

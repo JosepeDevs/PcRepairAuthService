@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.josepdevs.Application.GetAllRegisteredUseCase;
-import com.josepdevs.Domain.dto.AuthenticationData;
+import com.josepdevs.Domain.entities.AuthenticationData;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
