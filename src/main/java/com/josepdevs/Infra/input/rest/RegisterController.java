@@ -1,5 +1,6 @@
-package com.josepdevs.Infra.rest;
+package com.josepdevs.Infra.input.rest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class RegisterController {
 	
 	@PostMapping("/register")
 	public ResponseEntity<AuthenticationResponse> register (@RequestBody RegisterRequest request){
-		return ResponseEntity.ok(registerUseCase.register(request));
+		return ResponseEntity.status(HttpStatus.CREATED).body(registerUseCase.register(request));
 	}
 	
 }

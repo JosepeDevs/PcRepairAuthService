@@ -1,4 +1,4 @@
-package com.josepdevs.Infra.rest;
+package com.josepdevs.Infra.input.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

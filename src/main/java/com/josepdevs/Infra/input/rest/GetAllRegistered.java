@@ -1,4 +1,4 @@
-package com.josepdevs.Infra.rest;
+package com.josepdevs.Infra.input.rest;
 
 import java.util.List;
 

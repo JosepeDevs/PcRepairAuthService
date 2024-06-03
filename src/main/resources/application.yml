@@ -32,3 +32,10 @@ myconfig:
       expirationMinutes: 15 #minutes
       #refresh-token:
       #  expiration: 60 # minutes
+      
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+     defaultZone: http://${EUREKA_INSTANCE_HOSTNAME}:${EUREKA_PORT}/eureka
