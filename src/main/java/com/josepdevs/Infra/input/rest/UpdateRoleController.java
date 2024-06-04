@@ -18,12 +18,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
 @RequestMapping("api/v1/admin")
 @RestController
 @AllArgsConstructor
 @Hidden //this avoids OpenAPI /Swagger to map this controller
 public class UpdateRoleController {
-
 	private final PatchRoleUseCase patchRoleUseCase;
 	
 	//solo necesito la contraseña nueva porque también necesitaremos que venga con un token para darlo por válido
@@ -51,5 +51,5 @@ class UpdateRoleRequest {
 	
 	String id;
 	String role;
-	
 }
+	*/

@@ -12,10 +12,10 @@ import com.josepdevs.Application.PatchPassword;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 
+/*
 @RestController
 @RequiredArgsConstructor
 public class UpdatePasswordController {
-
 		private final PatchPassword patchPasswordUseCase;
 		
 		//solo necesito la contraseña nueva porque también necesitaremos que venga con un token para darlo por válido
@@ -34,5 +34,5 @@ public class UpdatePasswordController {
 
 		}
 		
-		
 }
+ */	

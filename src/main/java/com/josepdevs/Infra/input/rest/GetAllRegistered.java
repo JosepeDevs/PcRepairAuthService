@@ -14,13 +14,13 @@ import com.josepdevs.Domain.entities.AuthenticationData;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 
+/*
 @RequestMapping("api/v1/admin")
 @RestController
 @AllArgsConstructor
 @Hidden //this avoids OpenAPI /Swagger to map this controller
 public class GetAllRegistered {
-	
-	private final GetAllRegisteredUseCase useCase;
+	private final GetAllRegisteredUseCase getAllUseCase;
 	
 	@GetMapping("/getall")
 	public ResponseEntity<List<AuthenticationData>> getAllRegistered (@RequestHeader("Authorization") String jwtToken){
@@ -29,8 +29,8 @@ public class GetAllRegistered {
 		jwtToken = jwtToken.substring(7).replace (" ","");
 
 		//if we are calling this is because it got over my filters, i do not need to pollute with checks here
-		return ResponseEntity.ok(useCase.getAll(jwtToken));
+		return ResponseEntity.ok(getAllUseCase.getAll(jwtToken));
 
 	}
-	
 }
+ */
