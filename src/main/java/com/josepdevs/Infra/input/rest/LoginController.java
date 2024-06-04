@@ -14,7 +14,9 @@ import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+
 @RequestMapping("api/v1/noauth")
+
 @RequiredArgsConstructor
 public class LoginController {
 
@@ -26,5 +28,5 @@ public class LoginController {
 
 	}
 	
-	
 }
+
