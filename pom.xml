@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.josepedevs</groupId>
-	<artifactId>ClientManager</artifactId>
+	<artifactId>AuthManagerAuthManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TallerPC</name>
-	<description>Client manager</description>
+	<description>AuthManager</description>
 	<properties>
 		<java.version>22</java.version>
 	</properties>
@@ -55,6 +55,12 @@
 			<scope>test</scope>
 		</dependency>
 		
+
+		
+		 <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-aop</artifactId>
+		 </dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
 		<dependency>
@@ -113,134 +119,26 @@
 		    <scope>runtime</scope>
 		</dependency>
 
-
-		
-		<!--añadido según el post↓↓ https://mydeveloperplanet.com/2022/02/08/generate-server-code-using-openapi-generator/ luego en mvn central copio la dependencia entera)-->
-		
-		<!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
-		<dependency>
-		    <groupId>io.swagger.core.v3</groupId>
-		    <artifactId>swagger-annotations</artifactId>
-		    <version>2.2.21</version>
-		</dependency>
-
-		
-		<!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
-		<dependency>
-		    <groupId>jakarta.validation</groupId>
-		    <artifactId>jakarta.validation-api</artifactId>
-		    <version>3.1.0-M2</version>
-		</dependency> 
-		
-		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
-		<dependency>
-		    <groupId>javax.validation</groupId>
-		    <artifactId>validation-api</artifactId>
-		    <version>2.0.1.Final</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable -->
-		<dependency>
-		    <groupId>org.openapitools</groupId>
-		    <artifactId>jackson-databind-nullable</artifactId>
-		    <version>0.2.6</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-boot-starter</artifactId>
-		    <version>3.0.0</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger-ui</artifactId>
-		    <version>3.0.0</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
-		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger2</artifactId>
-		    <version>3.0.0</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
-		<dependency>
-		    <groupId>javax.annotation</groupId>
-		    <artifactId>javax.annotation-api</artifactId>
-		    <version>1.3.2</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
-		<dependency>
-		    <groupId>jakarta.annotation</groupId>
-		    <artifactId>jakarta.annotation-api</artifactId>
-		    <version>3.0.0</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
-		<dependency>
-		    <groupId>jakarta.servlet</groupId>
-		    <artifactId>jakarta.servlet-api</artifactId>
-		    <scope>provided</scope>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-		    <version>4.0.1</version>
-		    <scope>provided</scope>
-		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-			    <groupId>org.openapitools</groupId>
-			    <artifactId>openapi-generator-maven-plugin</artifactId>
-			    <version>7.5.0</version>
-			    <executions>
-			        <execution>
-			            <goals>
-			                <goal>generate</goal>
-			            </goals>
-			            <configuration>
-			                <inputSpec>${project.basedir}/src/main/resources/static/pcMicroservice.yaml</inputSpec>
-		                
-				              <generateApis>true</generateApis>
-					          	<generateModels>true</generateModels>
-					         <!-- <generateSupportingFiles>false</generateSupportingFiles>-->
-
-                         <!--<configOptions>
-
-								<basePackage>com.josepedevs</basePackage>
-               					<sourceFolder>src/main/java</sourceFolder>
-                				<hideGenerationTimestamp>true</hideGenerationTimestamp>
-                				<swaggerDirectory>${basedir}/generated/swagger-ui</swaggerDirectory>
-	                            <outputPath>${project.basedir}/generated/document.html</outputPath>-->
- 
-				                <generatorName>spring</generatorName>
-							    <packageName>com.josepedevs</packageName>
-							    <apiPackage>com.josepedevs.Infra.rest</apiPackage>
-							    <modelPackage>com.josepedevs.domain.dto</modelPackage>
-                         <!-- </configOptions>-->	
-
-			            </configuration>
-			        </execution>
-			    </executions>
-			</plugin>
-		</plugins>
-	</build>
+	<!-- ADDDING PROFILES -->
+	<profiles>
+	    <profile>
+	        <id>PROAWS</id>
+	        <properties>
+	            <activatedProperties>proaws</activatedProperties>
+	        </properties>
+	    </profile>
+	    <profile>
+	        <id>DEVNEON</id>
+	        <properties>
+	            <activatedProperties>devneon</activatedProperties>
+	        </properties>
+	    </profile>
+	</profiles>
 
 </project>

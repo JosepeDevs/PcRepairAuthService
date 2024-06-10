@@ -4,8 +4,8 @@ public class EmailNotValidException extends MyRuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public EmailNotValidException(String myErrorMessage, String illegalAttributeValue) {
-        super(myErrorMessage, illegalAttributeValue );
+	public EmailNotValidException(String myErrorMessage, String illegalAttributeName) {
+        super(myErrorMessage, EmailNotValidException.class.getName() );
     }
 	
 }

@@ -53,35 +53,22 @@ public class AuthenticationData implements UserDetails{
 	@Column(name = "role")
 	private String role;
 
-	@Column(name = "psswrd_salt")
-	private String psswrdSalt;
-
-	@Column(name = "registration_token")
-	private String registrationToken;
-	
-	@Column(name = "psswrdchange_token")
-	private String psswrdChangeToken;
-	
-	@Column(name = "psswrdtoken_issuedate")
-	private String 	psswrdTokenIssuedate;
+	@Column(name = "current_token")
+	private String 	currentToken;
 	
 	@Column(name = "active")
 	private boolean	active;
 
 	
 	public AuthenticationData(UUID idUser, String username, String email, String psswrd,
-							Role role, String psswrdSalt, String registrationToken,
-							String psswrdChangeToken, String 	psswrdTokenIssuedate, boolean active) {
+							Role role, String currentToken, boolean active) {
 		
 		   this.idUser = idUser;
 	        this.username = username;
 	        this.email = email;
 	        this.psswrd = psswrd;
 	        this.role = role.name();
-	        this.psswrdSalt = psswrdSalt;
-	        this.registrationToken = registrationToken;
-	        this.psswrdChangeToken = psswrdChangeToken;
-	        this.psswrdTokenIssuedate = psswrdTokenIssuedate;
+	        this.currentToken = currentToken;
 	        this.active = active;
 	}
 	

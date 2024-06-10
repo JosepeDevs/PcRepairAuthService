@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Component
 public class AuthenticationDataDto {
-	
+	 
 	private String username;
     private String email;
     private String psswrd;

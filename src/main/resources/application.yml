@@ -5,9 +5,9 @@ spring:
   banner:
     location: JPD.txt
   datasource:
-    url: ${DB_URL} # this is from AWS RDS
-    username: ${DB_USER}  # this is from AWS RDS
-    password: ${DB_PSSWRD} # this is from AWS RDS
+    url: ${DB_URL} 
+    username: ${DB_USER}  
+    password: ${DB_PSSWRD}
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
@@ -39,3 +39,25 @@ eureka:
     register-with-eureka: true
     service-url:
      defaultZone: http://${EUREKA_INSTANCE_HOSTNAME}:${EUREKA_PORT}/eureka
+     
+resilience4j:
+  bulkhead:
+    instances:
+      getFallbackRegisteredBulkHead:
+        max-concurrent-calls: 2
+        max-wait-duration: 0  # 0 means don’t wait for anything, show response immediately
+  ratelimiter:
+    instances:
+      getMessageRateLimit:
+        limit-for-period: 2 # allows this number of request
+        limit-refresh-period: 5s # in this timeframe
+        timeout-duration: 0 #after the period there is no additional time to accept more requests
+  retry:
+    instances:
+      getInvoiceRetry:
+        max-attempts: 4
+        wait-duration: 1s #time between retries
+        retry-exceptions:
+          - java.util.NoSuchElementException # retry if username was not found, maybe we are experiencing eventual consistency and just need to wait and retry
+          - com.josepdevs.Domain.Exceptions.UserNotFoundException # retry if this exception is raised, amybe eventual consistency
+

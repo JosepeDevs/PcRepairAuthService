@@ -2,6 +2,8 @@ package com.josepdevs.Domain.config;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +13,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.josepdevs.Domain.service.JwtTokenReaderService;
+import com.josepdevs.Domain.Exceptions.TokenNotValidException;
+import com.josepdevs.Domain.repository.AuthRepository;
+import com.josepdevs.Domain.service.JwtTokenDataExtractorService;
+import com.josepdevs.Domain.service.JwtTokenValidations;
+import com.josepdevs.Infra.input.rest.GetAllRegisteredController;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,8 +29,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtValidationFilter extends OncePerRequestFilter {
 
-	private final JwtTokenReaderService jwtTokenReaderService;
+	private final JwtTokenDataExtractorService jwtTokenReaderService;
+	private final JwtTokenValidations jwtValidations;
 	private final UserDetailsService userDetailsService;
+	private final AuthRepository repository;
+	private final Logger logger = LoggerFactory.getLogger(JwtValidationFilter.class);
+
 	
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
@@ -36,6 +46,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		
 		if(authorizationHeader == null || ! authorizationHeader.startsWith("Bearer ")) {
 			//if not authorized
+			logger.error("No token found, JwtValidationFilter skipped");
 			filterChain.doFilter(request, response);
 			return; //this is included to stop execution after calling filterChain.
 		}
@@ -44,11 +55,15 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		jwtToken = authorizationHeader.substring(7).replace (" ","");
 		//we need a class to read from the JwtToken
 		username = jwtTokenReaderService.extractUsername(jwtToken); 
+		if( repository.isTokenInvalidated(username) ) {
+			logger.error("The user "+ username + "tried to authenticate with currentToken status is invalidated");
+			throw new TokenNotValidException("Your token was invalidated and access was not granted", "Authentication token");
+		}
 		//if already authenticated skip all the generation process. If authentication is null, the user is not authenticated yet
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null ) {
 			//get user details from database
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			if( jwtTokenReaderService.isTokenUserDataValidAndNotExpired(jwtToken, userDetails) ){
+			if( jwtValidations.isTokenUserDataValidAndNotExpired(jwtToken, userDetails) ){
 				//by being able to create this token we have secured this request
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				//convert HttpServlet request class into WebAuthenticationDetails Spring class equivalent to request
@@ -59,6 +74,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			};
 		}
+		logger.info("JwtValidationFilter finished checking, continuing to next filter...");
 		filterChain.doFilter(request, response);
 	}
 

@@ -26,7 +26,7 @@ public class JwtTokenIssuerService {
 	@Value("${myconfig.security.jwt.expirationMinutes}")
 	private int expirationMinutes;
 	
-	private JwtTokenReaderService tokenReaderService;
+	private JwtTokenDataExtractorService tokenReaderService;
 	
 	//not private but package limited to be calleable by jwtToken Reader service
 	SecretKey getSecretSigningKey() {

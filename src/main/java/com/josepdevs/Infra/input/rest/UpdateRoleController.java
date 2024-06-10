@@ -2,6 +2,8 @@ package com.josepdevs.Infra.input.rest;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.josepdevs.Application.PatchRoleUseCase;
+import com.josepdevs.Infra.output.postgresql.UserPostgreSqlAdapter;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,11 +23,11 @@ import lombok.NoArgsConstructor;
 @RequestMapping("api/v1/admin")
 @RestController
 @AllArgsConstructor
-@Hidden //this avoids OpenAPI /Swagger to map this controller
 public class UpdateRoleController {
 
 	private final PatchRoleUseCase patchRoleUseCase;
-	
+	private final Logger logger = LoggerFactory.getLogger(UpdateRoleController.class);
+
 	//solo necesito la contraseña nueva porque también necesitaremos que venga con un token para darlo por válido
 	@PatchMapping("/patchrole")
 	public ResponseEntity<Boolean> patchRole (@RequestHeader("Authorization") String jwtToken, @RequestBody UpdateRoleRequest request){
@@ -35,8 +37,10 @@ public class UpdateRoleController {
 
 		boolean roleChanged = patchRoleUseCase.patchRole(jwtToken, UUID.fromString(request.getId()), request.getRole());
 		if(	roleChanged ) {
+			logger.info("Role updated correctly.");
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
 		} else {
+			logger.info("Role was not updated.");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
 	}
