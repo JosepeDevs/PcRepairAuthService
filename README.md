@@ -1,7 +1,8 @@
 # Authentication service
 
 ## About this microservice 
-- Custom JWT generation and validation to allow access to endpoints (secured by path and/or role) 
+- Custom JWT generation and validation to allow access to endpoints (secured by path and/or role)
+- Invalidation of tokens
 - API REST with resilence library for Retry, RateLimiter and Bulkhead if service is down.
 - use of optionals.
 - custom exceptions.
