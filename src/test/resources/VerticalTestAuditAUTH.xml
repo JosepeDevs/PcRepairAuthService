@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="VerticalTestAuditAUTH">
+    <test name="VerticalTestAuditAUTH" preserve-order="true" thread-count="10" parallel="methods">
+        <classes>
+            <class name="com.josepdevs.TestSuite.VerticalTestAuditAUTH"/>
+        </classes>
+    </test>
+</suite>

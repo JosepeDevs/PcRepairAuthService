@@ -17,7 +17,6 @@ import com.josepdevs.Domain.Exceptions.TokenNotValidException;
 import com.josepdevs.Domain.repository.AuthRepository;
 import com.josepdevs.Domain.service.JwtTokenDataExtractorService;
 import com.josepdevs.Domain.service.JwtTokenValidations;
-import com.josepdevs.Infra.input.rest.GetAllRegisteredController;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

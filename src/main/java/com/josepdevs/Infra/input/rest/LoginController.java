@@ -15,6 +15,7 @@ import com.josepdevs.Domain.Exceptions.BusyOrDownServerException;
 import com.josepdevs.Domain.dto.AuthenticationRequest;
 import com.josepdevs.Domain.dto.AuthenticationResponse;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class LoginController {
 	@PostMapping("/authenticate")
 	@Retry(name="loginRT",fallbackMethod="loginRetry")
 	@RateLimiter(name="loginRL",fallbackMethod="loginRateLimiter")
+	@CircuitBreaker(name="loginCB",fallbackMethod="loginRateLimiter")
 	public ResponseEntity<AuthenticationResponse> login (@RequestBody AuthenticationRequest request){
 		logger.info("Logging in user: "+ request.toString());
 		return ResponseEntity.ok(loginUseCase.login(request));

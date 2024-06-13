@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.josepdevs.Application.PatchRoleUseCase;
-import com.josepdevs.Infra.output.postgresql.UserPostgreSqlAdapter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -33,7 +33,7 @@ public class GetAllRegisteredController {
 		//we arrive here after all the filters have passed correctly
 		//"Bearer " are 7 digits, with this we get in a string the token value and replace white spaces, just in case
 		jwtToken = jwtToken.substring(7).replace (" ","");
-		logger.info("token extracted, from endpoint /getall");
+		logger.info("/getall --> token extracted from Bearer token.");
 		//if we are calling this is because it got over my filters, i do not need to pollute with checks here
 		return ResponseEntity.ok(useCase.getAll(jwtToken));
 

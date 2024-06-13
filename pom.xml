@@ -14,7 +14,8 @@
 	<name>TallerPC</name>
 	<description>AuthManager</description>
 	<properties>
-		<java.version>22</java.version>
+		<java.version>21</java.version>
+	    <runSuite>**/VerticalTestAuditAUTH.java</runSuite>
 	</properties>
 	
 	<dependencies>
@@ -55,8 +56,34 @@
 			<scope>test</scope>
 		</dependency>
 		
-
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <scope>test</scope>
+		</dependency>
 		
+		<!-- JUnit Jupiter Engine -->
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-engine</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Mockito -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		
+		
+		<!--RESIULENCE PAGACKES REQUIRED https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-circuitbreaker-resilience4j -->
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+		    <version>3.1.1</version>
+		</dependency>
+
 		 <dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-aop</artifactId>
@@ -124,6 +151,30 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		
+		<!--To allow mvn test execution, scope provided instead oof test and set optional so users do not have this dependency (only applicable if application is provided to clients)-->
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+		    <groupId>org.testng</groupId>
+		    <artifactId>testng</artifactId>
+		    <version>7.10.2</version>
+		   <scope>test</scope>
+		    <optional>true</optional>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.junit.platform</groupId>
+		    <artifactId>junit-platform-suite-api</artifactId>
+		    <scope>test</scope>
+		</dependency>
+		<dependency>
+    		<groupId>junit</groupId>
+		    <artifactId>junit</artifactId>
+		    <scope>test</scope>
+		</dependency>
+
+		
 	</dependencies>
 	<!-- ADDDING PROFILES -->
 	<profiles>
@@ -140,5 +191,33 @@
 	        </properties>
 	    </profile>
 	</profiles>
+<!--prpearing maven plugin for testing, specify location xml that points to java class with test suite and properties regardgin concurerncy-->
+<build>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+					<includes>
+						<included>
+							**/VerticalTestAuditAUTH.java
+						</included>
+					</includes>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>
+                            VerticalTestAuditAUTH.xml
+                        </suiteXmlFile>
+                    </suiteXmlFiles>
+                </configuration>
+            </plugin>
+           <!-- <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>-->
 
+        </plugins>
+    </pluginManagement>
+</build>
 </project>

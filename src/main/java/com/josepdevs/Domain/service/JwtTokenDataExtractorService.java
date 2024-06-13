@@ -10,11 +10,9 @@ import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.josepdevs.Domain.dto.valueobjects.Role;
-import com.josepdevs.Infra.input.rest.GetAllRegisteredController;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

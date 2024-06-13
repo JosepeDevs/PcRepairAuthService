@@ -35,7 +35,7 @@ public class GetAllRegisteredUseCase {
 			throw new UserNotFoundException("The user was not found or the token does not containe the required data.", "Username");	
 		});
 		
-		if(existingUser.getRole().toString().equals("ADMIN")){
+		if(existingUser.getRole().equals("ADMIN")){
 			logger.info("Returning all authentication data");
 			return repository.getAll();
 		} else {

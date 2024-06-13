@@ -28,7 +28,7 @@ public class InvalidateToken {
 		AuthenticationData existingUser = userDataAuth
 				.orElseThrow( () -> {
 					logger.error("User was not found with that username");
-					 throw new UserNotFoundException("You tried to update the password of a user that does not exists or the token with the credentials did not contain the user.", "Username") ;	
+					 throw new UserNotFoundException("You tried to invavlidate a token that do not belong to any user.", "Token->Username") ;	
 				});
 		existingUser.setCurrentToken("invalidated");
 		boolean success = repository.invalidateToken(existingUser);

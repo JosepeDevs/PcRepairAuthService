@@ -43,21 +43,32 @@ eureka:
 resilience4j:
   bulkhead:
     instances:
-      getFallbackRegisteredBulkHead:
+      getAllBH:
         max-concurrent-calls: 2
         max-wait-duration: 0  # 0 means don’t wait for anything, show response immediately
   ratelimiter:
     instances:
-      getMessageRateLimit:
+      loginRL:
         limit-for-period: 2 # allows this number of request
         limit-refresh-period: 5s # in this timeframe
         timeout-duration: 0 #after the period there is no additional time to accept more requests
   retry:
     instances:
-      getInvoiceRetry:
+      loginRT:
         max-attempts: 4
         wait-duration: 1s #time between retries
         retry-exceptions:
           - java.util.NoSuchElementException # retry if username was not found, maybe we are experiencing eventual consistency and just need to wait and retry
           - com.josepdevs.Domain.Exceptions.UserNotFoundException # retry if this exception is raised, amybe eventual consistency
+  circuitbreaker:
+    instances:
+      loginCB:
+        failureRateThreshold: 80 # % of failed executions to go to close state
+        slidingWindowSize: 10 # timeframe to reset % failure threshold
+        slidingWindowType: COUNT_BASED # it can also be TIME_BASED.
+        minimumNumberOfCalls: 5 # minimum number of calls to start calculating % for threshold
+        automaticTransitionFromOpenToHalfOpenEnabled: true # false would imply that it is left open after failures 
+        permittedNumberOfCallsInHalfOpenState: 5 # number of request to evaluate threshold again (whithin open-close), if for example, 5 at least 4 should fail to go again to "open"
+        waitDurationInSecondsOpenState: 1s # once the threshold is not reached, this is the time to switch to closed again.
+
 

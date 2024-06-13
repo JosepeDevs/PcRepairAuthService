@@ -2,7 +2,6 @@ package com.josepdevs.Infra.output.postgresql;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.josepdevs.Domain.Exceptions.UserNotFoundException;
 import com.josepdevs.Domain.entities.AuthenticationData;
 import com.josepdevs.Domain.repository.AuthRepository;
-import com.josepdevs.Infra.input.rest.GetAllRegisteredController;
 import com.josepdevs.Infra.output.AuthJpaRepository;
 
 @Repository
@@ -29,8 +27,8 @@ public class UserPostgreSqlAdapter implements AuthRepository{
 
 	@Override
     public AuthenticationData registerUserAuthData(AuthenticationData userAuthData, String jwtToken) {
-	        userJpaRepository.save(userAuthData);
 			logger.info("registering user.");
+			userJpaRepository.save(userAuthData);
 
 	        //after save it should contain the UUID, in the future this will return bool, and the event will publish the UUID
 	        return userAuthData;
