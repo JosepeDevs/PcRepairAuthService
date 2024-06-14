@@ -3,7 +3,7 @@
 <suite name="VerticalTestAuditAUTH">
     <test name="VerticalTestAuditAUTH" preserve-order="true" thread-count="10" parallel="methods">
         <classes>
-            <class name="com.josepdevs.VerticalTestAuditAUTH"/>
+            <class name="VerticalTestAuditAUTH"/>
         </classes>
     </test>
 </suite>
