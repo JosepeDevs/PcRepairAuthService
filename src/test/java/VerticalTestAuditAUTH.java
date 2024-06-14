@@ -1,9 +1,9 @@
-package com.josepdevs.TestSuite;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 import com.josepdevs.Application.GetAllRegisteredUseCaseTest;
+import com.josepdevs.Application.InvalidateTokenTest;
 import com.josepdevs.Infra.input.rest.GetAllRegisteredControllerTest;
 import com.josepdevs.Infra.input.rest.InvalidateTokenControllerTest;
 import com.josepdevs.Infra.input.rest.LoginControllerTest;
@@ -24,8 +24,9 @@ import com.josepdevs.Infra.output.postgresql.UserPostgreSqlAdapterTest;
 		UpdateRoleControllerTest.class , 
 		//Application
 		GetAllRegisteredUseCaseTest.class,
+		InvalidateTokenTest.class,
 		//Infra.output.postgresql
-		UserPostgreSqlAdapterTest.class,
+		UserPostgreSqlAdapterTest.class
 })
 public class VerticalTestAuditAUTH {
 
