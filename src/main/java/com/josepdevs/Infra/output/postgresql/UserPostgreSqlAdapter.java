@@ -2,6 +2,7 @@ package com.josepdevs.Infra.output.postgresql;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.josepdevs.Domain.Exceptions.UserNotFoundException;
 import com.josepdevs.Domain.entities.AuthenticationData;
 import com.josepdevs.Domain.repository.AuthRepository;
+import com.josepdevs.Domain.service.GetUserFromTokenIdService;
 import com.josepdevs.Infra.output.AuthJpaRepository;
 
 @Repository
@@ -17,7 +19,6 @@ public class UserPostgreSqlAdapter implements AuthRepository{
 
     private final AuthJpaRepository userJpaRepository;
 	private final Logger logger = LoggerFactory.getLogger(UserPostgreSqlAdapter.class);
-
 	
     public UserPostgreSqlAdapter(AuthJpaRepository userJpaRepository) {
         this.userJpaRepository = userJpaRepository;
@@ -112,6 +113,23 @@ public class UserPostgreSqlAdapter implements AuthRepository{
 		String token = existentUser.getCurrentToken();
 		logger.info("Checking value of token to determine if it is invalidated: "+ token);
 		return ( token == null || token.equals("invalidated") );
+	}
+
+	@Override
+	public boolean deleteHard(UUID userId) {
+		userJpaRepository.deleteById(userId);
+		Optional<AuthenticationData> userDataAuth = userJpaRepository.findById(userId); 
+		if( userDataAuth.isEmpty() ) {
+			//correctly deleted
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public Optional<AuthenticationData> findById(UUID id) {
+		return userJpaRepository.findById(id);
 	}
 
 
