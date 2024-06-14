@@ -15,6 +15,8 @@ public interface AuthRepository {
     
     public Optional<AuthenticationData> findByUsername(String username);
     
+    public Optional<AuthenticationData> findById(UUID id);
+    
 	public boolean invalidateToken(AuthenticationData authData);
 	
 	public boolean isTokenInvalidated(String username);
@@ -24,6 +26,8 @@ public interface AuthRepository {
 	public boolean patchRole(AuthenticationData authData, String role);
 	
 	public List<AuthenticationData> getAll();
+	
+	public boolean deleteHard(UUID userId);
 
 	
 }
