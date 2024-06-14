@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.josepdevs.Domain.Exceptions.UserNotFoundException;
 import com.josepdevs.Domain.entities.AuthenticationData;
 import com.josepdevs.Domain.repository.AuthRepository;
+import com.josepdevs.Domain.service.GetUserFromTokenUsernameService;
 import com.josepdevs.Domain.service.JwtTokenDataExtractorService;
 
 import lombok.AllArgsConstructor;
@@ -20,18 +21,15 @@ public class InvalidateToken {
 	private final AuthRepository repository;
 	private final JwtTokenDataExtractorService jwtReaderService;
 	private final Logger logger = LoggerFactory.getLogger(InvalidateToken.class);
+	private final GetUserFromTokenUsernameService getUserFromTokenUsernameService;
 
 	public boolean invalidateToken(String jwtToken) {
 		//here is being throw the error
 		String username = jwtReaderService.extractUsername(jwtToken);
-		Optional<AuthenticationData> userDataAuth = repository.findByUsername(username); 
-		AuthenticationData existingUser = userDataAuth
-				.orElseThrow( () -> {
-					logger.error("User was not found with that username");
-					 throw new UserNotFoundException("You tried to invavlidate a token that do not belong to any user.", "Token->Username") ;	
-				});
-		existingUser.setCurrentToken("invalidated");
-		boolean success = repository.invalidateToken(existingUser);
+		AuthenticationData user = getUserFromTokenUsernameService.getUserFromTokenUsername(username);
+
+		user.setCurrentToken("invalidated");
+		boolean success = repository.invalidateToken(user);
 		if( success ) {
 			logger.info("The token was correctly invalidaded.");
 			return true;

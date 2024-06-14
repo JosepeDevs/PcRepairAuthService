@@ -1,6 +1,6 @@
 package com.josepdevs.Application;
 
-import java.util.HashMap;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.josepdevs.Domain.Exceptions.UserAlreadyExistsException;
-import com.josepdevs.Domain.config.JwtValidationFilter;
-import com.josepdevs.Domain.dto.AuthenticationResponse;
 import com.josepdevs.Domain.dto.RegisterRequest;
-import com.josepdevs.Domain.dto.valueobjects.Role;
 import com.josepdevs.Domain.entities.AuthenticationData;
 import com.josepdevs.Domain.service.JwtTokenIssuerService;
 import com.josepdevs.Infra.output.AuthJpaRepository;
@@ -27,7 +24,7 @@ public class Register {
 	private final JwtTokenIssuerService jwtService;
 	private final Logger logger = LoggerFactory.getLogger(Register.class);
 
-	public AuthenticationResponse register(RegisterRequest request) {
+	public UUID register(RegisterRequest request) {
 	
 		String username = request.getUsername();
 		String email = request.getEmail();
@@ -47,12 +44,10 @@ public class Register {
 					.build();
 			var jwtToken = jwtService.generateBasicToken(userAuthData);
 			userAuthData.setCurrentToken(jwtToken);
-			repository.save(userAuthData);
-			logger.trace("returning generated token.");
-			return AuthenticationResponse.builder()
-					.token(jwtToken)
-					.build();
-		}
+			AuthenticationData user = repository.save(userAuthData);
+			logger.trace("returning generated UUID.");
+			
+			return user.getIdUser();		}
 	}
 	
 	

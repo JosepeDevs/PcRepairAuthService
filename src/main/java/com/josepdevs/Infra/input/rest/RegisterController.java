@@ -1,5 +1,7 @@
 package com.josepdevs.Infra.input.rest;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.josepdevs.Application.Register;
 import com.josepdevs.Domain.Exceptions.BusyOrDownServerException;
-import com.josepdevs.Domain.dto.AuthenticationResponse;
 import com.josepdevs.Domain.dto.RegisterRequest;
 
 import io.github.resilience4j.retry.annotation.Retry;
@@ -27,7 +28,7 @@ public class RegisterController {
 
 	@PostMapping("/register")
 	@Retry(name="registerRT",fallbackMethod="registerRetry")
-	public ResponseEntity<AuthenticationResponse> register (@RequestBody RegisterRequest request){
+	public ResponseEntity<UUID> register (@RequestBody RegisterRequest request){
 		logger.info("Registering user:"+request.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(registerUseCase.register(request));
 	}

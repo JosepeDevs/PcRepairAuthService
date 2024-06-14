@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.josepdevs.Domain.Exceptions.TokenNotValidException;
 import com.josepdevs.Domain.repository.AuthRepository;
 import com.josepdevs.Domain.service.JwtTokenDataExtractorService;
 import com.josepdevs.Domain.service.JwtTokenValidations;
@@ -54,15 +53,13 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		jwtToken = authorizationHeader.substring(7).replace (" ","");
 		//we need a class to read from the JwtToken
 		username = jwtTokenReaderService.extractUsername(jwtToken); 
-		if( repository.isTokenInvalidated(username) ) {
-			logger.error("The user "+ username + "tried to authenticate with currentToken status is invalidated");
-			throw new TokenNotValidException("Your token was invalidated and access was not granted", "Authentication token");
-		}
+		boolean trueOrWillthrowException = repository.isTokenInvalidated(username);
 		//if already authenticated skip all the generation process. If authentication is null, the user is not authenticated yet
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null ) {
 			//get user details from database
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			if( jwtValidations.isTokenUserDataValidAndNotExpired(jwtToken, userDetails) ){
+			logger.trace("test");
+			if( jwtValidations.isUserTokenCompletelyValidated(jwtToken, userDetails) ){
 				//by being able to create this token we have secured this request
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				//convert HttpServlet request class into WebAuthenticationDetails Spring class equivalent to request

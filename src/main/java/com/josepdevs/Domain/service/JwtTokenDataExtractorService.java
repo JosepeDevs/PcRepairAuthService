@@ -32,7 +32,7 @@ public class JwtTokenDataExtractorService {
 	 * @param jwtToken
 	 * @return Claims (all the payLoad/Body)
 	 */
-	private Claims extractAllClaims(String jwtToken) {
+	public Claims extractAllClaims(String jwtToken) {
 	    SecretKey secretSigningKey = jwtTokenIssuerService.getSecretSigningKey();
 
 	    //montamos el parser, añadiendo la secret key
@@ -57,7 +57,6 @@ public class JwtTokenDataExtractorService {
 	    logger.trace("Extracting specific type of claim from token");
 		return claimsTypeResolver.apply(allClaims);
 	}
-	
 	
 	/**
 	 * Given a token extracts all claims, then extracts claim of type equal to getSubject (String)
