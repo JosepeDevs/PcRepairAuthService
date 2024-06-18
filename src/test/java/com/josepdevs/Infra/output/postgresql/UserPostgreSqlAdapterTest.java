@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -22,8 +21,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import com.josepdevs.Domain.entities.AuthenticationData;
-import com.josepdevs.Infra.output.AuthJpaRepository;
+import com.josepedevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Infra.output.AuthJpaRepository;
+import com.josepedevs.Infra.output.postgresql.UserPostgreSqlAdapter;
 
 @ExtendWith(MockitoExtension.class)
 public class UserPostgreSqlAdapterTest {

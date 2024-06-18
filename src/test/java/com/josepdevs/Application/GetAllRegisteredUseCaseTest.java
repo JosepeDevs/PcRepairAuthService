@@ -2,6 +2,7 @@ package com.josepdevs.Application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -15,12 +16,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.josepdevs.Domain.Exceptions.InadequateRoleException;
-import com.josepdevs.Domain.Exceptions.UserNotFoundException;
-import com.josepdevs.Domain.entities.AuthenticationData;
-import com.josepdevs.Domain.repository.AuthRepository;
-import com.josepdevs.Domain.service.JwtTokenDataExtractorService;
-import com.josepdevs.Domain.service.JwtTokenValidations;
+import com.josepedevs.Application.GetAllRegisteredUseCase;
+import com.josepedevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Domain.exceptions.InadequateRoleException;
+import com.josepedevs.Domain.exceptions.UserNotFoundException;
+import com.josepedevs.Domain.repository.AuthRepository;
+import com.josepedevs.Domain.service.GetUserFromTokenUsernameService;
+import com.josepedevs.Domain.service.JwtTokenDataExtractorService;
+import com.josepedevs.Domain.service.JwtTokenValidations;
 
 @ExtendWith(MockitoExtension.class)
 public class GetAllRegisteredUseCaseTest {
@@ -34,6 +37,8 @@ public class GetAllRegisteredUseCaseTest {
 	@Mock
 	JwtTokenValidations jwtValidations;
 	
+	GetUserFromTokenUsernameService getUserFromTokenUsernameService = mock(GetUserFromTokenUsernameService.class);
+
 	@InjectMocks
 	GetAllRegisteredUseCase useCase;
 	
@@ -43,7 +48,8 @@ public class GetAllRegisteredUseCaseTest {
 		String jwtToken ="tokenValue";
 		String username ="specificUserName";
 		UUID userId = UUID.randomUUID();
-		
+		boolean success = true;
+
 		
 		AuthenticationData authenticationData = AuthenticationData.builder()
 															      .idUser(userId)
@@ -100,9 +106,10 @@ public class GetAllRegisteredUseCaseTest {
 		Optional<AuthenticationData> userDataAuth =  Optional.ofNullable(authenticationData); 
 
 		when(jwtReaderService.extractUsername(jwtToken)).thenReturn(username);
-		when(repository.findByUsername(username)).thenReturn(userDataAuth);
 		when(repository.getAll()).thenReturn(mockDataList);
-		
+		when(getUserFromTokenUsernameService.getUserFromTokenUsername(username)).thenReturn(authenticationData);
+		when(jwtValidations.isAdminTokenCompletelyValidated(jwtToken)).thenReturn(success);
+
 		
 		List<AuthenticationData> finalResult = useCase.getAll(jwtToken);
 
@@ -112,10 +119,12 @@ public class GetAllRegisteredUseCaseTest {
 	}
 	
 	@Test
-	void getAll_ShouldReturnExceptionIfUserIsNotAdmin() {
+	void getAll_ShouldReturnEmptyListIfNotAdmin() {
 
 		String jwtToken ="tokenValue";
 		String username ="specificUserName";
+		boolean success = false;
+
 		UUID userId = UUID.randomUUID();
 		
 		when(jwtReaderService.extractUsername(jwtToken)).thenReturn(username);
@@ -132,12 +141,12 @@ public class GetAllRegisteredUseCaseTest {
 																  
 		Optional<AuthenticationData> userDataAuth =  Optional.ofNullable(authenticationData); 
 
-		when(repository.findByUsername(username)).thenReturn(userDataAuth);
-
+		when(getUserFromTokenUsernameService.getUserFromTokenUsername(username)).thenReturn(authenticationData);
 		when(jwtReaderService.extractUsername(jwtToken)).thenReturn(username);
-		
-        Exception InadequateRoleException = assertThrows(InadequateRoleException.class, () -> useCase.getAll(jwtToken));
+		when(jwtValidations.isAdminTokenCompletelyValidated(jwtToken)).thenReturn(success);
 
+		 List<AuthenticationData> resultList = useCase.getAll(jwtToken);
+		 assertThat(resultList.isEmpty());
 
 	}
 	

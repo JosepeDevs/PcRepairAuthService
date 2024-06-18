@@ -11,8 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.josepdevs.Application.InvalidateToken;
-import com.josepdevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Application.InvalidateToken;
+import com.josepedevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Infra.input.rest.InvalidateTokenController;
 
 @ExtendWith(MockitoExtension.class) //tells JUnit to use Mockito for mocking dependencies
 public class InvalidateTokenControllerTest {

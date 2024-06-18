@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "myconfig.security.jwt.SECRET_-kEY",
+    "type": "java.lang.String",
+    "description": "secret signing key for signature of jwTokens"
+  },
+  {
+    "name": "myconfig.security.jwt.expirationMinutes",
+    "type": "java.lang.String",
+    "description": "Number of minutes the token will live"
+  }
+]}

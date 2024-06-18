@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 
-import com.josepdevs.Application.Login;
-import com.josepdevs.Domain.Exceptions.BusyOrDownServerException;
-import com.josepdevs.Domain.dto.AuthenticationRequest;
-import com.josepdevs.Domain.dto.AuthenticationResponse;
+import com.josepedevs.Application.Login;
+import com.josepedevs.Domain.dto.AuthenticationRequest;
+import com.josepedevs.Domain.dto.AuthenticationResponse;
+import com.josepedevs.Domain.exceptions.BusyOrDownServerException;
+import com.josepedevs.Infra.input.rest.LoginController;
 
 @RestController
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
-  <test thread-count="5" name="Default test(failed)">
+<suite name="Failed suite [Failed suite [Default suite]]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Default test(failed)(failed)">
     <classes>
       <class name="com.josepdevs.Infra.input.rest.ApiRESTAssuredTest">
         <methods>
@@ -9,9 +9,8 @@
           <include name="register_shouldCreateUserAndReturn201"/>
           <include name="deleteHard_shouldDeleteUserIfTokenBearerIsAdmin"/>
           <include name="getAll_shouldReturnAllDataIfTokenIsFromAnAdmin"/>
-          <include name="login_BadRequestIfNoBodySpecified"/>
         </methods>
       </class> <!-- com.josepdevs.Infra.input.rest.ApiRESTAssuredTest -->
     </classes>
-  </test> <!-- Default test(failed) -->
-</suite> <!-- Failed suite [Default suite] -->
+  </test> <!-- Default test(failed)(failed) -->
+</suite> <!-- Failed suite [Failed suite [Default suite]] -->

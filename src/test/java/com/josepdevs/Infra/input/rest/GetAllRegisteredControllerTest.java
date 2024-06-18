@@ -16,9 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.Test;
 
-import com.josepdevs.Application.GetAllRegisteredUseCase;
-import com.josepdevs.Domain.Exceptions.RequestNotPermittedException;
-import com.josepdevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Application.GetAllRegisteredUseCase;
+import com.josepedevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Domain.exceptions.RequestNotPermittedException;
+import com.josepedevs.Infra.input.rest.GetAllRegisteredController;
 
 @ExtendWith(MockitoExtension.class) //tells JUnit to use Mockito for mocking dependencies
 public class GetAllRegisteredControllerTest {

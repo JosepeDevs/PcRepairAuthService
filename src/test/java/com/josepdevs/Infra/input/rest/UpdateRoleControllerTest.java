@@ -15,7 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.josepdevs.Application.PatchRoleUseCase;
+import com.josepedevs.Application.PatchRoleUseCase;
+import com.josepedevs.Domain.dto.UpdateRoleRequest;
+import com.josepedevs.Domain.dto.UpdateRoleRequest;
+import com.josepedevs.Infra.input.rest.UpdateRoleController;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateRoleControllerTest {

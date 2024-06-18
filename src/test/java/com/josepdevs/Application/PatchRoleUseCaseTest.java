@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.josepdevs.Domain.Exceptions.InadequateRoleException;
-import com.josepdevs.Domain.Exceptions.UserNotFoundException;
-import com.josepdevs.Domain.dto.valueobjects.Role;
-import com.josepdevs.Domain.entities.AuthenticationData;
-import com.josepdevs.Domain.service.JwtTokenDataExtractorService;
-import com.josepdevs.Infra.output.AuthJpaRepository;
+import com.josepedevs.Domain.dto.valueobjects.Role;
+import com.josepedevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Domain.exceptions.InadequateRoleException;
+import com.josepedevs.Domain.exceptions.UserNotFoundException;
+import com.josepedevs.Domain.service.JwtTokenDataExtractorService;
+import com.josepedevs.Infra.output.AuthJpaRepository;
 
 import lombok.AllArgsConstructor;
 /*

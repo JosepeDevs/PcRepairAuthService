@@ -21,7 +21,7 @@ import com.josepdevs.Infra.output.postgresql.UserPostgreSqlAdapterTest;
 		LoginControllerTest.class,
 		RegisterControllerTest.class,
 		UpdatePasswordControllerTest.class,
-		UpdateRoleControllerTest.class , 
+		UpdateRoleControllerTest.class ,
 		//Application
 		GetAllRegisteredUseCaseTest.class,
 		InvalidateTokenTest.class,
