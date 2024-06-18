@@ -75,7 +75,19 @@
 		    <artifactId>mockito-core</artifactId>
 		    <scope>test</scope>
 		</dependency>
+
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		</dependency>
+
+
 		
 		<!--RESIULENCE PAGACKES REQUIRED https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-circuitbreaker-resilience4j -->
 		<dependency>

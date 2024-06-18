@@ -16,9 +16,11 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import com.josepdevs.Domain.entities.AuthenticationData;
-import com.josepdevs.Domain.repository.AuthRepository;
-import com.josepdevs.Domain.service.JwtTokenDataExtractorService;
+import com.josepedevs.Application.InvalidateToken;
+import com.josepedevs.Domain.entities.AuthenticationData;
+import com.josepedevs.Domain.repository.AuthRepository;
+import com.josepedevs.Domain.service.GetUserFromTokenUsernameService;
+import com.josepedevs.Domain.service.JwtTokenDataExtractorService;
 
 @ExtendWith(MockitoExtension.class)
 public class InvalidateTokenTest {
@@ -27,6 +29,7 @@ public class InvalidateTokenTest {
 	AuthRepository repository;
 
 	private JwtTokenDataExtractorService jwtReaderService = mock(JwtTokenDataExtractorService.class);
+	private  GetUserFromTokenUsernameService getUserFromTokenUsernameService = mock(GetUserFromTokenUsernameService.class);
 
 	@InjectMocks
 	InvalidateToken useCase;
@@ -62,7 +65,6 @@ public class InvalidateTokenTest {
 		
 		String jwtToken = "tokenValue";
 		String username ="specificUsername";
-		boolean finalResult = useCase.invalidateToken(jwtToken);
 		AuthenticationData mockAuthenticationData = mock(AuthenticationData.class);
 
 	    AuthenticationData.builder()
@@ -79,10 +81,9 @@ public class InvalidateTokenTest {
 		boolean success = true;
 		
 		when(jwtReaderService.extractUsername(jwtToken)).thenReturn(username);
-		when(repository.findByUsername(username)).thenReturn(optionaluser);
-		when(repository.invalidateToken(mock(AuthenticationData.class))).thenReturn(success);
+		when(getUserFromTokenUsernameService.getUserFromTokenUsername(username)).thenReturn(mockAuthenticationData);
 		
-		// throw new UserNotFoundException("You tried to update the password of a user that does not exists or the token with the credentials did not contain the user.", "Username") ;	
+		boolean finalResult = useCase.invalidateToken(jwtToken);
 	}
 	
 	

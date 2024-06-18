@@ -12,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.josepdevs.Application.PatchPassword;
+import com.josepedevs.Application.PatchPassword;
+import com.josepedevs.Infra.input.rest.UpdatePasswordController;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdatePasswordControllerTest {

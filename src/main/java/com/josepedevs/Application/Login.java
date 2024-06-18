@@ -1,4 +1,4 @@
-package com.josepdevs.Application;
+package com.josepedevs.Application;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,32 +9,33 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import com.josepedevs.Domain.dto.AuthenticationRequest;
 import com.josepedevs.Domain.dto.AuthenticationResponse;
+import com.josepedevs.Domain.entities.AuthenticationData;
 import com.josepedevs.Domain.exceptions.TokenNotValidException;
 import com.josepedevs.Domain.repository.AuthRepository;
+import com.josepedevs.Domain.service.GetUserFromTokenUsernameService;
 import com.josepedevs.Domain.service.JwtTokenIssuerService;
 
 import lombok.RequiredArgsConstructor;
-/*
+
 @Service
 @RequiredArgsConstructor
-public class LoginTest {
+public class Login {
 
 	private final AuthenticationManager authenticationManager;
 	private final AuthRepository repository;
 	private final JwtTokenIssuerService jwtService;
 	private final Logger logger = LoggerFactory.getLogger(Login.class);
+	private final GetUserFromTokenUsernameService getUserFromTokenUsernameService;
+
 
 	public AuthenticationResponse login(AuthenticationRequest request) {
-    	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPsswrd()));
-	    var userDataAuth = repository.findByUsername(request.getUsername())
-    		.orElseThrow( () -> {
-			    logger.error("username was not found in our database: "+ request.getUsername());
-			    throw new NoSuchElementException("The element was not found");
-    		}
-			);
+		String username = request.getUsername();
+    	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, request.getPsswrd()));
+		AuthenticationData userDataAuth = getUserFromTokenUsernameService.getUserFromTokenUsername(username);
 	    
 	    Map<String, Object> extraClaims = new HashMap<>();
 	    extraClaims.put("authorities", userDataAuth.getAuthorities()); 
@@ -54,4 +55,3 @@ public class LoginTest {
 	}
 }
 
-*/
