@@ -25,7 +25,6 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
 		return new UserDetailsService() {
-			//revisar que puede que falte algo aquí, no veo la asignacion del creado ouserDetails con UserDetails obtenidos.
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 				// TODO Auto-generated method stub
