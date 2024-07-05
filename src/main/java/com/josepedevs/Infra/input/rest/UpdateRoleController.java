@@ -2,6 +2,8 @@ package com.josepedevs.Infra.input.rest;
 
 import java.util.UUID;
 
+import com.josepedevs.Domain.dto.AuthDataMapper;
+import com.josepedevs.Domain.entities.AuthenticationData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -28,11 +30,11 @@ public class UpdateRoleController {
 	//solo necesito la contraseña nueva porque también necesitaremos que venga con un token para darlo por válido
 	@PatchMapping("/patchrole")
 	public ResponseEntity<Boolean> patchRole (@RequestHeader("Authorization") String jwtToken, @RequestBody UpdateRoleRequest request){
+
 		//we arrive here after all the filters have passed correctly
 		//"Bearer " are 7 digits, with this we get in a string the token value and replace white spaces, just in case
 		jwtToken = jwtToken.substring(7).replace (" ","");
-
-		boolean roleChanged = patchRoleUseCase.patchRole(jwtToken, UUID.fromString(request.getId()), request.getRole());
+		boolean roleChanged = patchRoleUseCase.patchRole(jwtToken, request);
 		if(	roleChanged ) {
 			logger.info("Role updated correctly.");
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
