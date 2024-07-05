@@ -131,5 +131,10 @@ public class UserPostgreSqlAdapter implements AuthRepository{
 		return userJpaRepository.findById(id);
 	}
 
+	@Override
+	public Optional<AuthenticationData> findByEmail(String email) {
+		return userJpaRepository.findByEmail(email);
+	}
+
 
 }
