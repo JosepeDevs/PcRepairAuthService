@@ -2,6 +2,7 @@ package com.josepedevs.Application;
 
 import java.util.UUID;
 
+import com.josepedevs.Domain.repository.AuthRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Register {
 
-	private final AuthJpaRepository repository;
+	private final AuthRepository repository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenIssuerService jwtService;
 	private final Logger logger = LoggerFactory.getLogger(Register.class);
@@ -44,7 +45,7 @@ public class Register {
 					.build();
 			var jwtToken = jwtService.generateBasicToken(userAuthData);
 			userAuthData.setCurrentToken(jwtToken);
-			AuthenticationData user = repository.save(userAuthData);
+			AuthenticationData user = repository.registerUserAuthData(userAuthData, jwtToken);
 			logger.trace("returning generated UUID.");
 			
 			return user.getIdUser();		}
