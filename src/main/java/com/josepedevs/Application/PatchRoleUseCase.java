@@ -2,6 +2,9 @@ package com.josepedevs.Application;
 
 import java.util.UUID;
 
+import com.josepedevs.Domain.dto.AuthDataMapper;
+import com.josepedevs.Domain.dto.UpdateRoleRequest;
+import com.josepedevs.Domain.repository.AuthRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,23 +22,28 @@ import lombok.AllArgsConstructor;
 @Service
 public class PatchRoleUseCase {
 	
-	private final AuthJpaRepository repository;
+	private final AuthRepository repository;
 	private final Logger logger = LoggerFactory.getLogger(PatchRoleUseCase.class);
 	private final GetUserFromTokenUsernameService getUserFromTokenUsernameService;
 	private final GetUserFromTokenIdService getUserFromTokenIdService;
 	private final JwtTokenDataExtractorService jwtReaderService;
 	private final JwtTokenValidations jwtValidations;
 	
-	public boolean patchRole(String jwtToken, UUID id, String role) {
-		
+	public boolean patchRole(String jwtToken, UpdateRoleRequest request) {
+
+		//Using MAPSTRUCT we map from request class to domain class
+		AuthenticationData authData = AuthDataMapper.INSTANCE.mapToAuthData(request);
+
+		UUID id = authData.getIdUser();
+		String role = authData.getRole();
+
 		//check if user declared in token exists
 		String username = jwtReaderService.extractUsername(jwtToken);
-		AuthenticationData existingAdmin = getUserFromTokenUsernameService.getUserFromTokenUsername(username);
 		AuthenticationData existingUserToBeChanged = getUserFromTokenIdService.getUserFromTokenId(id);
-		boolean isAdminOrExceptionWasThrown = jwtValidations.isAdminTokenCompletelyValidated(jwtToken);
+		boolean isAdminOrExceptionWillBeThrown = jwtValidations.isAdminTokenCompletelyValidated(jwtToken);
 		
-		if( ! isAdminOrExceptionWasThrown ){
-			//This should not be executed, since checking for admin in the token throws exception, 
+		if( ! isAdminOrExceptionWillBeThrown ){
+			//This should not be executed, since checking for admin and finding that is not an admin will  throw an exception,
 			logger.error("The token's user was not admin, as it was expected.");
 			return false;
 
@@ -43,7 +51,7 @@ public class PatchRoleUseCase {
 			
 			String rolInicial = existingUserToBeChanged.getRole();
 			existingUserToBeChanged.setRole(role);
-			AuthenticationData savedUser = repository.save(existingUserToBeChanged);
+			AuthenticationData savedUser = repository.registerUserAuthData(existingUserToBeChanged, jwtToken);
 			if(rolInicial == savedUser.getRole()) {
 				logger.info("The role was not updated ");
 				return false;
