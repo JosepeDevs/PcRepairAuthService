@@ -40,13 +40,13 @@ public class UpdateRoleControllerTest {
 
 	        boolean roleChanged = true;
 
-	        when(patchRoleUseCase.patchRole(tokenValue, UUID.fromString(id), role)).thenReturn(roleChanged);
+	        when(patchRoleUseCase.patchRole(tokenValue, request)).thenReturn(roleChanged);
 
 	        // When
 	        ResponseEntity<Boolean> finalResult = controller.patchRole(jwtToken, request);
 
 	        // Then
-	        verify(patchRoleUseCase, times(1)).patchRole(tokenValue, UUID.fromString(id), role);
+	        verify(patchRoleUseCase, times(1)).patchRole(tokenValue, request);
 	        assertEquals(HttpStatus.NO_CONTENT, finalResult.getStatusCode());
 			assertEquals(roleChanged,finalResult.getBody());
     }
@@ -62,11 +62,11 @@ public class UpdateRoleControllerTest {
 
         boolean roleChanged = false;
 
-        when(patchRoleUseCase.patchRole(tokenValue, UUID.fromString(id), role)).thenReturn(roleChanged);
+        when(patchRoleUseCase.patchRole(tokenValue, request)).thenReturn(roleChanged);
 
         ResponseEntity<Boolean> finalResult = controller.patchRole(jwtToken, request);
 
-        verify(patchRoleUseCase, times(1)).patchRole(tokenValue, UUID.fromString(id), role);
+        verify(patchRoleUseCase, times(1)).patchRole(tokenValue, request);
 		assertEquals(HttpStatus.BAD_REQUEST, finalResult.getStatusCode()); 
 		assertEquals(roleChanged,finalResult.getBody());
 	}
