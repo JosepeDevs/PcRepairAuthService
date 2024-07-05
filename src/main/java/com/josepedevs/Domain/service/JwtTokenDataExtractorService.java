@@ -114,9 +114,9 @@ public class JwtTokenDataExtractorService {
     }
 	
 	/**
-	 * Given a token, extract expiration, the type hander will make it to a Date type
+	 * Given a token, extract expiration, the type handler will make it to a Date type
 	 * @param jwtToken
-	 * @return
+	 * @return Claims:Expiration
 	 */
 	protected Date extractExpiration(String jwtToken) {
 	    logger.trace("Checking if token was expired");
