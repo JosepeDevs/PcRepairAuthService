@@ -16,7 +16,8 @@ public interface AuthRepository {
     public Optional<AuthenticationData> findByUsername(String username);
     
     public Optional<AuthenticationData> findById(UUID id);
-    
+	public Optional<AuthenticationData> findByEmail(String email);
+
 	public boolean invalidateToken(AuthenticationData authData);
 	
 	public boolean isTokenInvalidated(String username);
