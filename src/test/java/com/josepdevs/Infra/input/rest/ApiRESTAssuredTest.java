@@ -2,6 +2,7 @@ package com.josepdevs.Infra.input.rest;
 
 import java.util.Map;
 
+import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata.entity.AuthenticationDataEntity;
 import org.junit.Before;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -11,7 +12,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.josepedevs.Domain.entities.AuthenticationData;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -134,7 +134,7 @@ public class ApiRESTAssuredTest {
 			 
 			 String responseString = response.body().asString(); //save value in static field to be used in other tests
 		        ObjectMapper objectMapper = new ObjectMapper();
-		            Map<String, AuthenticationData> responseMap = objectMapper.readValue(responseString, new TypeReference<Map<String, AuthenticationData>>(){});
+		            Map<String, AuthenticationDataEntity> responseMap = objectMapper.readValue(responseString, new TypeReference<Map<String, AuthenticationDataEntity>>(){});
 			 response.then()
 		           .statusCode(200); // Asserting created
 	}

@@ -1,22 +1,5 @@
 package com.josepdevs.Application;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.stereotype.Service;
-
-import com.josepedevs.Domain.dto.AuthenticationRequest;
-import com.josepedevs.Domain.dto.AuthenticationResponse;
-import com.josepedevs.Domain.exceptions.TokenNotValidException;
-import com.josepedevs.Domain.repository.AuthRepository;
-import com.josepedevs.Domain.service.JwtTokenIssuerService;
-
-import lombok.RequiredArgsConstructor;
 /*
 @Service
 @RequiredArgsConstructor

@@ -90,9 +90,9 @@ at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
     </failure>
   </testcase> <!-- deleteHard_shouldDeleteUserIfTokenBearerIsAdmin -->
   <testcase classname="com.josepdevs.Infra.input.rest.ApiRESTAssuredTest" name="getAll_shouldReturnAllDataIfTokenIsFromAnAdmin" time="1.206">
-    <failure type="com.fasterxml.jackson.databind.exc.MismatchedInputException" message="Cannot construct instance of `com.josepedevs.Domain.entities.AuthenticationData` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value (&amp;apos;A problem happened.&amp;apos;)
+    <failure type="com.fasterxml.jackson.databind.exc.MismatchedInputException" message="Cannot construct instance of `com.josepedevs.domain.entities.AuthenticationData` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value (&amp;apos;A problem happened.&amp;apos;)
  at [Source: (String)&amp;quot;{&amp;quot;Exception&amp;quot;:&amp;quot;A problem happened.&amp;quot;}&amp;quot;; line: 1, column: 14] (through reference chain: java.util.LinkedHashMap[&amp;quot;Exception&amp;quot;])">
-      <![CDATA[com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot construct instance of `com.josepedevs.Domain.entities.AuthenticationData` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value ('A problem happened.')
+        <![CDATA[com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot construct instance of `com.josepedevs.domain.entities.AuthenticationData` (although at least one Creator exists): no String-argument constructor/factory method to deserialize from String value ('A problem happened.')
  at [Source: (String)"{"Exception":"A problem happened."}"; line: 1, column: 14] (through reference chain: java.util.LinkedHashMap["Exception"])
 at com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:63)
 at com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1739)

@@ -15,16 +15,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.josepedevs.Application.PatchRoleUseCase;
-import com.josepedevs.Domain.dto.UpdateRoleRequest;
-import com.josepedevs.Domain.dto.UpdateRoleRequest;
-import com.josepedevs.Infra.input.rest.UpdateRoleController;
+import com.josepedevs.application.usecase.user.PatchUserRoleUseCaseImpl;
+import com.josepedevs.domain.request.UpdateRoleRequest;
+import com.josepedevs.infra.input.rest.user.UpdateRoleController;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateRoleControllerTest {
 	
 	@Mock
-	PatchRoleUseCase patchRoleUseCase;
+	PatchUserRoleUseCaseImpl patchUserRoleUseCaseImpl;
 
 	@InjectMocks
 	UpdateRoleController controller;
@@ -40,13 +39,13 @@ public class UpdateRoleControllerTest {
 
 	        boolean roleChanged = true;
 
-	        when(patchRoleUseCase.patchRole(tokenValue, request)).thenReturn(roleChanged);
+	        when(patchUserRoleUseCaseImpl.patchRole(tokenValue, request)).thenReturn(roleChanged);
 
 	        // When
 	        ResponseEntity<Boolean> finalResult = controller.patchRole(jwtToken, request);
 
 	        // Then
-	        verify(patchRoleUseCase, times(1)).patchRole(tokenValue, request);
+	        verify(patchUserRoleUseCaseImpl, times(1)).patchRole(tokenValue, request);
 	        assertEquals(HttpStatus.NO_CONTENT, finalResult.getStatusCode());
 			assertEquals(roleChanged,finalResult.getBody());
     }
@@ -62,11 +61,11 @@ public class UpdateRoleControllerTest {
 
         boolean roleChanged = false;
 
-        when(patchRoleUseCase.patchRole(tokenValue, request)).thenReturn(roleChanged);
+        when(patchUserRoleUseCaseImpl.patchRole(tokenValue, request)).thenReturn(roleChanged);
 
         ResponseEntity<Boolean> finalResult = controller.patchRole(jwtToken, request);
 
-        verify(patchRoleUseCase, times(1)).patchRole(tokenValue, request);
+        verify(patchUserRoleUseCaseImpl, times(1)).patchRole(tokenValue, request);
 		assertEquals(HttpStatus.BAD_REQUEST, finalResult.getStatusCode()); 
 		assertEquals(roleChanged,finalResult.getBody());
 	}

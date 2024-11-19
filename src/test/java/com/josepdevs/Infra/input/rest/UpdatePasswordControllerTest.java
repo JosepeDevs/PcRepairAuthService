@@ -12,14 +12,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.josepedevs.Application.PatchPassword;
-import com.josepedevs.Infra.input.rest.UpdatePasswordController;
+import com.josepedevs.application.usecase.user.PatchUserPasswordUseCaseImpl;
+import com.josepedevs.infra.input.rest.user.UpdatePasswordController;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdatePasswordControllerTest {
 
 		@Mock
-		PatchPassword patchPasswordUseCase;
+		PatchUserPasswordUseCaseImpl patchUserPasswordUseCaseImplUseCase;
 
 		@InjectMocks
 		UpdatePasswordController controller;
@@ -32,7 +32,7 @@ public class UpdatePasswordControllerTest {
 			boolean psswrdWasNotChanged = true;
 			boolean bodyResponse = false; // because it failed
 			
-			when(patchPasswordUseCase.patchPassword(any(String.class),any(String.class))).thenReturn(psswrdWasNotChanged);
+			when(patchUserPasswordUseCaseImplUseCase.patchPassword(any(String.class),any(String.class))).thenReturn(psswrdWasNotChanged);
 			ResponseEntity<Boolean> finalResult = controller.newpassword(jwtToken, newpsswrd);
 			
 			assertEquals(HttpStatus.BAD_REQUEST,finalResult.getStatusCode());
@@ -49,7 +49,7 @@ public class UpdatePasswordControllerTest {
 			boolean psswrdWasNotChanged = false;
 			boolean bodyResponse = true; 
 			
-			when(patchPasswordUseCase.patchPassword(any(String.class),any(String.class))).thenReturn(psswrdWasNotChanged);
+			when(patchUserPasswordUseCaseImplUseCase.patchPassword(any(String.class),any(String.class))).thenReturn(psswrdWasNotChanged);
 			ResponseEntity<Boolean> finalResult = controller.newpassword(jwtToken, newpsswrd);
 			
 			assertEquals(HttpStatus.NO_CONTENT,finalResult.getStatusCode());

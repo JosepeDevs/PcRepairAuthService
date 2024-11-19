@@ -1,22 +1,5 @@
 package com.josepdevs.Application;
 
-import java.util.HashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.josepedevs.Domain.config.JwtValidationFilter;
-import com.josepedevs.Domain.dto.AuthenticationResponse;
-import com.josepedevs.Domain.dto.RegisterRequest;
-import com.josepedevs.Domain.dto.valueobjects.Role;
-import com.josepedevs.Domain.entities.AuthenticationData;
-import com.josepedevs.Domain.exceptions.UserAlreadyExistsException;
-import com.josepedevs.Domain.service.JwtTokenIssuerService;
-import com.josepedevs.Infra.output.AuthJpaRepository;
-
-import lombok.RequiredArgsConstructor;
 /*
 @Service
 @RequiredArgsConstructor

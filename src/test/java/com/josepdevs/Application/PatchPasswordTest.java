@@ -1,18 +1,5 @@
 package com.josepdevs.Application;
 
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.josepedevs.Domain.entities.AuthenticationData;
-import com.josepedevs.Domain.exceptions.UserNotFoundException;
-import com.josepedevs.Domain.repository.AuthRepository;
-import com.josepedevs.Domain.service.JwtTokenDataExtractorService;
-
-import lombok.RequiredArgsConstructor;
 /*
 @Service
 @RequiredArgsConstructor

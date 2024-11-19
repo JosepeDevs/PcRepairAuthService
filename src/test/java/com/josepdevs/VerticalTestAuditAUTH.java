@@ -3,29 +3,29 @@ import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
-import com.josepdevs.Application.GetAllRegisteredUseCaseTest;
+import com.josepdevs.Application.GetAllusersUseCaseImplTest;
 import com.josepdevs.Infra.input.rest.GetAllRegisteredControllerTest;
-import com.josepdevs.Infra.input.rest.InvalidateTokenControllerTest;
-import com.josepdevs.Infra.input.rest.LoginControllerTest;
-import com.josepdevs.Infra.input.rest.RegisterControllerTest;
+import com.josepdevs.Infra.input.rest.InvalidateUserTokenUseCaseImplControllerTest;
+import com.josepdevs.Infra.input.rest.LoginUserUseCaseImplControllerTest;
+import com.josepdevs.Infra.input.rest.RegisterUserUseCaseImplControllerTest;
 import com.josepdevs.Infra.input.rest.UpdatePasswordControllerTest;
 import com.josepdevs.Infra.input.rest.UpdateRoleControllerTest;
-import com.josepdevs.Infra.output.postgresql.UserPostgreSqlAdapterTest;
+import com.josepdevs.Infra.output.postgresql.JpaAuthenticationDataPostgreSqlAdapterTest;
 
 @Suite
 @SuiteDisplayName("VerticalTestAuditAUTH")
 @SelectClasses({ 
 		//Infra.input.rest
 		GetAllRegisteredControllerTest.class, 
-		InvalidateTokenControllerTest.class,
-		LoginControllerTest.class,
-		RegisterControllerTest.class,
+		InvalidateUserTokenUseCaseImplControllerTest.class,
+		LoginUserUseCaseImplControllerTest.class,
+		RegisterUserUseCaseImplControllerTest.class,
 		UpdatePasswordControllerTest.class,
 		UpdateRoleControllerTest.class , 
 		//Application
-		GetAllRegisteredUseCaseTest.class,
+		GetAllusersUseCaseImplTest.class,
 		//Infra.output.postgresql
-		UserPostgreSqlAdapterTest.class,
+		JpaAuthenticationDataPostgreSqlAdapterTest.class,
 		AuthManagerAppTest.class
 })
 public class VerticalTestAuditAUTH {

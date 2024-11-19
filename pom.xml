@@ -17,28 +17,33 @@
 		<java.version>21</java.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<runSuite>**/VerticalTestAuditAUTH.java</runSuite>
+		<mapstruct-version>1.6.0.Beta2</mapstruct-version>
+		<circuit-breaker-version>3.1.1</circuit-breaker-version>
+		<eureka-client-version>4.1.2</eureka-client-version>
+		<openfeign-version>4.1.2</openfeign-version>
+		<spring-security-version>6.3.0</spring-security-version>
+		<jjwt-version>0.12.5</jjwt-version>
+		<testng-version>7.10.2</testng-version>
+		<easy-random-version>5.0.0</easy-random-version>
 	</properties>
 	
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
-			<version>1.6.0.Beta2</version>
+			<version>${mapstruct-version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>1.6.0.Beta2</version>
+			<version>${mapstruct-version}</version>
 		</dependency>
 
 		<dependency>
@@ -76,14 +81,12 @@
 		    <scope>test</scope>
 		</dependency>
 		
-		<!-- JUnit Jupiter Engine -->
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-engine</artifactId>
 		    <scope>test</scope>
 		</dependency>
 		
-		<!-- Mockito -->
 		<dependency>
 		    <groupId>org.mockito</groupId>
 		    <artifactId>mockito-core</artifactId>
@@ -95,19 +98,16 @@
 		    <artifactId>jackson-databind</artifactId>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-core</artifactId>
 		</dependency>
 
-
-		
-		<!--RESIULENCE PAGACKES REQUIRED https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-circuitbreaker-resilience4j -->
+		<!--RESILENCE PACGACKES REQUIRED https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-circuitbreaker-resilience4j -->
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-		    <version>3.1.1</version>
+		    <version>${circuit-breaker-version}</version>
 		</dependency>
 
 		 <dependency>
@@ -115,82 +115,60 @@
 		    <artifactId>spring-boot-starter-aop</artifactId>
 		 </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-			<version>4.1.2</version>
+			<version>${eureka-client-version}</version>
 		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
-			<version>4.1.2</version>
+			<version>${openfeign-version}</version>
 		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-config</artifactId>
-		    <version>6.3.0</version>
+		    <version>${spring-security-version}</version>
 		</dependency>
-
-		
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-web</artifactId>
-		    <version>6.3.0</version>
+			<version>${spring-security-version}</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-core</artifactId>
-		    <version>6.3.0</version>
+			<version>${spring-security-version}</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt-api</artifactId>
-		    <version>0.12.5</version>
+		    <version>${jjwt-version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt-jackson</artifactId>
-		    <version>0.12.5</version>
+			<version>${jjwt-version}</version>
 		    <scope>runtime</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt-impl</artifactId>
-		    <version>0.12.5</version>
+			<version>${jjwt-version}</version>
 		    <scope>runtime</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
-		
-		<!--To allow mvn test execution, scope provided instead oof test and set optional so users do not have this dependency (only applicable if application is provided to clients)-->
-		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
 		<dependency>
 		    <groupId>org.testng</groupId>
 		    <artifactId>testng</artifactId>
-		    <version>7.10.2</version>
+		    <version>${testng-version}</version>
 		   <scope>test</scope>
 		    <optional>true</optional>
 		</dependency>
-		
 		<dependency>
 		    <groupId>org.junit.platform</groupId>
 		    <artifactId>junit-platform-suite-api</artifactId>
@@ -201,15 +179,18 @@
 		    <artifactId>junit</artifactId>
 		    <scope>test</scope>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 		<dependency>
 		    <groupId>io.rest-assured</groupId>
 		    <artifactId>rest-assured</artifactId>
 		</dependency>
-
-		
+		<dependency>
+			<groupId>org.jeasy</groupId>
+			<artifactId>easy-random-core</artifactId>
+			<version>${easy-random-version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
 	<!-- ADDDING PROFILES -->
 	<profiles>
 	    <profile>
@@ -225,14 +206,11 @@
 	        </properties>
 	    </profile>
 	</profiles>
-<!--prpearing maven plugin for testing, specify location xml that points to java class with test suite and properties regardgin concurerncy-->
+
+<!--MAVEN PLUGIN for testing, specify location xml that points to java class with test suite and properties regarding concurrency-->
 <build>
     <pluginManagement>
         <plugins>
-
-
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

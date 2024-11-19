@@ -16,16 +16,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.testng.annotations.Test;
 
-import com.josepedevs.Application.GetAllRegisteredUseCase;
-import com.josepedevs.Domain.entities.AuthenticationData;
-import com.josepedevs.Domain.exceptions.RequestNotPermittedException;
-import com.josepedevs.Infra.input.rest.GetAllRegisteredController;
+import com.josepedevs.application.usecase.user.GetAllusersUseCaseImpl;
+import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata.entity.AuthenticationDataEntity;
+import com.josepedevs.domain.exceptions.RequestNotPermittedException;
+import com.josepedevs.infra.input.rest.user.GetAllRegisteredController;
 
 @ExtendWith(MockitoExtension.class) //tells JUnit to use Mockito for mocking dependencies
 public class GetAllRegisteredControllerTest {
 
     @Mock
-    private GetAllRegisteredUseCase useCase; //mock dependencies
+    private GetAllusersUseCaseImpl useCase; //mock dependencies
 
     @InjectMocks
     private GetAllRegisteredController controller; //class being tested
@@ -36,8 +36,8 @@ public class GetAllRegisteredControllerTest {
     	//we will have a token (it will be validated in other tests), here any string will do
     	String jwtToken = "$2a$10$fTW3mvR1ZeXalGlCzpLknuAilhC9JA/.X6xeW6gcvFQxV.ex1/jIe";
     	//we will have a list of AutheticationData that will be returned if token is valid
-		List<AuthenticationData> mockDataList = List.of(
-				AuthenticationData.builder()
+		List<AuthenticationDataEntity> mockDataList = List.of(
+				AuthenticationDataEntity.builder()
 					.idUser(UUID.fromString("d006b05b-0781-4016-874d-fcacc892f51e"))
 					.username("pepito")
 					.email("pepi@ito.com")
@@ -47,7 +47,7 @@ public class GetAllRegisteredControllerTest {
 					.active(true)
 					.build()
 			,
-				AuthenticationData.builder()
+				AuthenticationDataEntity.builder()
 					.idUser(UUID.fromString("499e0779-0115-4110-87ae-87c804a4a7ff"))
 					.username("Astronauta")
 					.email("espacial@user.com")
@@ -57,7 +57,7 @@ public class GetAllRegisteredControllerTest {
 					.active(false)
 					.build()
 			,
-				AuthenticationData.builder()
+				AuthenticationDataEntity.builder()
 					.idUser(UUID.fromString("3cfd698e-fa1a-41df-9527-6316593cfc46"))
 					.username("LegolasXXX")
 					.email("LOTR@4ever.com")
@@ -67,7 +67,7 @@ public class GetAllRegisteredControllerTest {
 					.active(true)
 					.build()
 			,
-				AuthenticationData.builder()
+				AuthenticationDataEntity.builder()
 					.idUser(UUID.fromString("3cfd698e-fa1a-41df-9527-6316593cfc46"))
 					.username("LegolasXXX")
 					.email("LOTR@4ever.com")
@@ -84,7 +84,7 @@ public class GetAllRegisteredControllerTest {
 		when(useCase.getAll(anyString())).thenReturn(mockDataList);
 
 		//here controller calls the actual method that its executed 
-        ResponseEntity<List<AuthenticationData>> result = controller.getAllRegistered(jwtToken);
+        ResponseEntity<List<AuthenticationDataEntity>> result = controller.getAllRegistered(jwtToken);
         //since we prepared an List of AuthenticationData, no matter what I write, instead of jwtToken, it will 
         //return the same list
         
