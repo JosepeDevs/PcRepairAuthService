@@ -79,9 +79,9 @@ public class JwtTokenValidations {
 	public boolean isAdminTokenCompletelyValidated(String jwtToken) {
 		Map<String,Object> rolesAndPermissions = jwtTokenDataExtractorService.extractRolesAndPermissions(jwtToken);
 		logger.trace("Extracted data from token, it contained: "+ rolesAndPermissions.toString());
-		boolean isTokenInvalidated  = isTokenInvalidated(jwtToken);
-		boolean isTokenExpired = isTokenExpired(jwtToken);
-		boolean isTokenFromAdmin = isTokenFromAnAdmin(jwtToken);
+		final var isTokenInvalidated  = isTokenInvalidated(jwtToken);
+		final var isTokenExpired = isTokenExpired(jwtToken);
+		final var isTokenFromAdmin = isTokenFromAnAdmin(jwtToken);
 		return ( ! isTokenInvalidated && ! isTokenExpired && isTokenFromAdmin );
 	}
 

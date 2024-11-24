@@ -1,24 +1,19 @@
 package com.josepedevs.application.service;
 
+import com.josepedevs.domain.entity.valueobjects.Role;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import javax.crypto.SecretKey;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import com.josepedevs.domain.entity.valueobjects.Role;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -36,9 +31,9 @@ public class JwtTokenDataExtractorService {
 	    SecretKey secretSigningKey = jwtTokenIssuerService.getSecretSigningKey();
 
 	    //montamos el parser, añadiendo la secret key
-	    JwtParser jwsParser = Jwts .parser().verifyWith(secretSigningKey).build();
+		final var  jwsParser = Jwts .parser().verifyWith(secretSigningKey).build();
 	    // el parser, ya con la key, extraerá los Claims del JWT
-	    Jws<Claims> jwsClaims = jwsParser.parseSignedClaims(jwtToken);
+		final var  jwsClaims = jwsParser.parseSignedClaims(jwtToken);
 	    //extraemos de los claims el payload
 	    logger.trace("Extracting all claims from token.");
 		return jwsClaims.getPayload();
@@ -53,7 +48,7 @@ public class JwtTokenDataExtractorService {
 	 * @return the claim in the correspodent type
 	 */
 	public <T> T extractClaim(String jwtToken, Function<Claims, T> claimsTypeResolver) {
-		final Claims allClaims = extractAllClaims(jwtToken);
+		final var  allClaims = extractAllClaims(jwtToken);
 	    logger.trace("Extracting specific type of claim from token");
 		return claimsTypeResolver.apply(allClaims);
 	}
@@ -74,7 +69,7 @@ public class JwtTokenDataExtractorService {
 	 * @return
 	 */
 	public  Map<String,Object> extractRolesAndPermissions(String jwtToken) {
-		final Claims allClaims = extractAllClaims(jwtToken);
+		final var allClaims = extractAllClaims(jwtToken);
         List<?> rolesRaw = (List<?>) allClaims.get("roles");
 
         // Check if the retrieved list is not null and contains only Role instances
@@ -84,10 +79,10 @@ public class JwtTokenDataExtractorService {
         	return new HashMap<>();
         } else {
         	// Perform the unchecked cast safely knowing all elements are Role instances
-        	List<Role> roles = (List<Role>) rolesRaw;
+			final var  roles = (List<Role>) rolesRaw;
         	Map<String,Object> extraClaims = new HashMap<>();
-        	StringBuilder rolesSB = new StringBuilder();
-        	StringBuilder permissionsSB = new StringBuilder();
+			final var  rolesSB = new StringBuilder();
+			final var  permissionsSB = new StringBuilder();
         	//builds something like "User, Editor," includes a comma always at the end too
         	for (Role role : roles){
         		rolesSB.append(role.toString());

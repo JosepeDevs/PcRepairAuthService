@@ -1,6 +1,6 @@
 package com.josepedevs.application.service;
 
-import com.josepedevs.application.usecase.user.PatchUserPasswordUseCaseImpl;
+import com.josepedevs.application.usecase.authenticationdata.PatchAuthenticationDataPasswordUseCaseImpl;
 import com.josepedevs.domain.entity.AuthenticationData;
 import com.josepedevs.domain.exceptions.UserNotFoundException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class GetUserFromTokenUsernameService {
 	
 	private final AuthenticationDataRepository repository;
-	private final Logger logger = LoggerFactory.getLogger(PatchUserPasswordUseCaseImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(PatchAuthenticationDataPasswordUseCaseImpl.class);
 
 	public AuthenticationData getUserFromTokenUsername(String username) {
 		

@@ -25,6 +25,28 @@
 		<jjwt-version>0.12.5</jjwt-version>
 		<testng-version>7.10.2</testng-version>
 		<easy-random-version>5.0.0</easy-random-version>
+		<maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+		<maven-compiler-plugin>3.8.1</maven-compiler-plugin>
+		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+		<openapi-generator-maven-plugin.version>7.10.0</openapi-generator-maven-plugin.version>
+		<swagger-codegen-maven-plugin.version>2.4.43</swagger-codegen-maven-plugin.version>
+		<swagger-annotations.version>1.5.21</swagger-annotations.version>
+		<jackson.version>2.11.4</jackson.version>
+		<maven-plugin.version>1.0.0</maven-plugin.version>
+		<swagger-core.version>2.2.25</swagger-core.version>
+		<mockito-core.version>5.14.2</mockito-core.version>
+		<jakarta.validation-api.version>3.1.0-M2</jakarta.validation-api.version>
+		<javax.servlet-api.version>6.1.0</javax.servlet-api.version>
+		<jakarta.annotation-api.version>3.0.0</jakarta.annotation-api.version>
+		<javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+		<springfox-swagger2.version>3.0.0</springfox-swagger2.version>
+		<springfox-swagger-ui.version>3.0.0</springfox-swagger-ui.version>
+		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
+		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+		<validation-api.version>2.0.1.Final</validation-api.version>
+		<swagger-models.version>2.2.25</swagger-models.version>
+		<swagger-annotations.version>2.2.25</swagger-annotations.version>
 	</properties>
 	
 	<dependencies>
@@ -33,88 +55,66 @@
 			<artifactId>lombok</artifactId>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${mapstruct-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${mapstruct-version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-api</artifactId>
 		    <scope>test</scope>
 		</dependency>
-		
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-engine</artifactId>
 		    <scope>test</scope>
 		</dependency>
-		
 		<dependency>
 		    <groupId>org.mockito</groupId>
 		    <artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
 		    <scope>test</scope>
 		</dependency>
-
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-core</artifactId>
-		</dependency>
-
 		<!--RESILENCE PACGACKES REQUIRED https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-circuitbreaker-resilience4j -->
 		<dependency>
 		    <groupId>org.springframework.cloud</groupId>
 		    <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
 		    <version>${circuit-breaker-version}</version>
 		</dependency>
-
 		 <dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-aop</artifactId>
 		 </dependency>
-
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -189,6 +189,128 @@
 			<version>${easy-random-version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-codegen-maven-plugin</artifactId>
+			<version>${swagger-codegen-maven-plugin.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>openapi-generator</artifactId>
+			<version>${openapi-generator-maven-plugin.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-core</artifactId>
+			<version>${swagger-core.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger-annotations.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-models</artifactId>
+			<version>${swagger-models.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-base</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>${jakarta.validation-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${validation-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>${jackson-databind-nullable.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${springfox-boot-starter.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox-swagger-ui.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox-swagger2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>${javax.annotation-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>${jakarta.annotation-api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>${javax.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<!-- ADDDING PROFILES -->
@@ -207,57 +329,26 @@
 	    </profile>
 	</profiles>
 
-<!--MAVEN PLUGIN for testing, specify location xml that points to java class with test suite and properties regarding concurrency-->
 <build>
     <pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-                <configuration>
-					<includes>
-						<included>
-							**/VerticalTestAuditAUTH.java
-						</included>
-					</includes>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>
-                            VerticalTestAuditAUTH.xml
-                        </suiteXmlFile>
-                    </suiteXmlFiles>
-                    <argLine>
-                        --illegal-access=permit
-                    </argLine>
-                </configuration>
-            </plugin>
-           <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
-                    <configuration>
-	                    <argLine>
-	                        --illegal-access=permit
-	                    </argLine>
-                    </configuration>
-            </plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${maven-compiler-plugin}</version>
 				<configuration>
 					<source>1.21</source>
 					<target>1.21</target>
 					<annotationProcessorPaths>
 						<path>
-							<groupId>org.projectlombok</groupId> <!-- IMPORTANT - LOMBOK BEFORE MAPSTRUCT -->
+							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 							<version>${lombok.version}</version>
 						</path>
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>0.2.0</version>
+							<version>${lombok-mapstruct-binding.version}</version>
 						</path>
 
 						<path>
@@ -265,9 +356,158 @@
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${org.mapstruct.version}</version>
 						</path>
-						<!-- other annotation processors -->
 					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+
+<!-- Maven Surefire Plugin -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<runOrder>alphabetical</runOrder>
+					<includes>
+						<included>**/**Test</included>
+					</includes>
+					<excludes>
+						<exclude>**/*IT</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+<!-- Maven Failsafe Plugin -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<runOrder>alphabetical</runOrder>
+					<includes>
+						<included>**/**Test</included>
+					</includes>
+					<excludes>
+						<exclude>**/*IT</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+<!--OpenAPI Generator plugin-->
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator-maven-plugin.version}</version>
+				<executions>
+					<execution>
+<!--						<id>generate-sources</id>-->
+<!--						<phase>generate-sources</phase>-->
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/static/open-api-contract.yaml</inputSpec>
+							<output>${project.build.directory}/generated-sources/openapi/</output>
+							<generatorName>spring</generatorName>
+							<generateApis>true</generateApis>
+<!--							<generateApiTests>true</generateApiTests>-->
+							<generateModels>true</generateModels>
+<!--							<generateModelTests>true</generateModelTests>-->
+<!--							<generateApiDocumentation>true</generateApiDocumentation>-->
+							<generateSupportingFiles>true</generateSupportingFiles>
+<!--							<modelNamePrefix>Rest</modelNamePrefix>-->
+<!--							<modelNameSuffix>Dto</modelNameSuffix>-->
+
+<!--							<packageName>${project.groupId}</packageName>-->
+							<apiPackage>${project.groupId}.generated.api</apiPackage>
+							<modelPackage>${project.groupId}.generated.model</modelPackage>
+
+<!--							<typeMappings>-->
+<!--								<typeMapping>Exception=Exception</typeMapping>-->
+<!--							</typeMappings>-->
+
+<!--							<importMappings>-->
+<!--								<importMapping>Exception=java.lang.Exception</importMapping>-->
+<!--								<importMapping>Pageable=org.springframework.data.domain.Pageable</importMapping>-->
+<!--								<importMapping>Direction=org.springframework.data.domain.Sort.Direction</importMapping>-->
+<!--								<importMapping>NullHandling=org.springframework.data.domain.Sort.NullHandling</importMapping>-->
+<!--								<importMapping>Sort=org.springframework.data.domain.Sort</importMapping>-->
+<!--								<importMapping>AuthenticationDataPage=com.josepedevs.infra.input.rest.authenticationdata.mapping.AuthenticatonDataPage</importMapping>-->
+<!--							</importMappings>-->
+
+							<configOptions>
+<!--								<sourceFolder>src/main/java/</sourceFolder>-->
+<!--								<dateLibrary>java21</dateLibrary>-->
+<!--								<supportJava6>false</supportJava6>-->
+<!--								<singleContentTypes>false</singleContentTypes>-->
+<!--								<serializableModel>true</serializableModel>-->
+<!--								<library>spring-boot</library>-->
+<!--								<useTags>true</useTags>-->
+								<interfaceOnly>false</interfaceOnly>
+<!--								<defaultInterfaces>false</defaultInterfaces>-->
+							</configOptions>
+
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+<!--IO Swagger codegen for RestClient plugin-->
+			<plugin>
+				<groupId>io.swagger.codegen.v3</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>${swagger-codegen-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/openapi/rest-client.yaml</inputSpec>
+<!--							<language>spring</language>-->
+							<language>java</language>
+							<modelNamePrefix>RestClient</modelNamePrefix>
+							<modelNameSuffix>Dto</modelNameSuffix>
+							<generateApis>true</generateApis>
+							<generateApiTests>true</generateApiTests>
+							<generateApiDocumentation>false</generateApiDocumentation>
+							<generateModels>true</generateModels>
+							<output>${project.build.directory}/generated-sources/rest-client</output>
+							<apiPackage>${project.groupId}.generated.api</apiPackage>
+							<modelPackage>${project.groupId}.generated.model</modelPackage>
+
+							<importMappings>
+								<importMapping>Exception=java.lang.Exception</importMapping>
+								<importMapping>Pageable=org.springframework.data.domain.Pageable</importMapping>
+								<importMapping>Direction=org.springframework.data.domain.Sort.Direction</importMapping>
+								<importMapping>NullHandling=org.springframework.data.domain.Sort.NullHandling</importMapping>
+								<importMapping>Sort=org.springframework.data.domain.Sort</importMapping>
+								<importMapping>AuthenticationDataPage=com.josepedevs.infra.input.rest.authenticationdata.mapping.AuthenticatonDataPage</importMapping>
+							</importMappings>
+
+							<configOptions>
+								<sourceFolder>src/main/java/</sourceFolder>
+								<library>spring-boot</library>
+								<generateForOpenFeign>true</generateForOpenFeign>
+								<dateLibrary>java21</dateLibrary>
+								<supportJava6>false</supportJava6>
+								<useTags>true</useTags>
+								<interfaceOnly>false</interfaceOnly>
+								<defaultInterfaces>false</defaultInterfaces>
+							</configOptions>
+
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
         </plugins>
     </pluginManagement>

@@ -3,7 +3,7 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.josepdevs.Infra.input.rest.ApiRESTAssuredTest">
+      <class name="com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest">
         <methods>
           <include name="login_shouldAuthenticateAndReturn200"/>
           <include name="register_shouldCreateUserAndReturn201"/>
@@ -11,7 +11,7 @@
           <include name="getAll_shouldReturnAllDataIfTokenIsFromAnAdmin"/>
           <include name="login_BadRequestIfNoBodySpecified"/>
         </methods>
-      </class> <!-- com.josepdevs.Infra.input.rest.ApiRESTAssuredTest -->
+      </class> <!-- com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -6,8 +6,8 @@
     <groups>
     </groups>
     <test started-at="2024-06-17T16:21:39 CEST" name="Default test" finished-at="2024-06-17T17:19:22 CEST" duration-ms="3463511">
-      <class name="com.josepdevs.Infra.input.rest.ApiRESTAssuredTest">
-        <test-method signature="getAll_shouldReturnAllDataIfTokenIsFromAnAdmin()[pri:0, instance:com.josepdevs.Infra.input.rest.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:39 CEST" name="getAll_shouldReturnAllDataIfTokenIsFromAnAdmin" finished-at="2024-06-17T16:21:44 CEST" duration-ms="4842" status="FAIL">
+      <class name="com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest">
+        <test-method signature="getAll_shouldReturnAllDataIfTokenIsFromAnAdmin()[pri:0, instance:com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:39 CEST" name="getAll_shouldReturnAllDataIfTokenIsFromAnAdmin" finished-at="2024-06-17T16:21:44 CEST" duration-ms="4842" status="FAIL">
           <exception class="com.fasterxml.jackson.databind.exc.MismatchedInputException">
             <message>
               <![CDATA[No content to map due to end-of-input
@@ -21,7 +21,7 @@ at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java
 at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818)
 at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772)
 at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3755)
-at com.josepdevs.Infra.input.rest.ApiRESTAssuredTest.getAll_shouldReturnAllDataIfTokenIsFromAnAdmin(ApiRESTAssuredTest.java:134)
+at com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest.getAll_shouldReturnAllDataIfTokenIsFromAnAdmin(ApiRESTAssuredTest.java:134)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
@@ -54,7 +54,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getAll_shouldReturnAllDataIfTokenIsFromAnAdmin -->
-        <test-method signature="login_BadRequestIfNoBodySpecified()[pri:0, instance:com.josepdevs.Infra.input.rest.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:44 CEST" name="login_BadRequestIfNoBodySpecified" finished-at="2024-06-17T16:21:44 CEST" duration-ms="203" status="FAIL">
+        <test-method signature="login_BadRequestIfNoBodySpecified()[pri:0, instance:com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:44 CEST" name="login_BadRequestIfNoBodySpecified" finished-at="2024-06-17T16:21:44 CEST" duration-ms="203" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[1 expectation failed.
@@ -95,7 +95,7 @@ at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCal
 at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
 at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
 at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
-at com.josepdevs.Infra.input.rest.ApiRESTAssuredTest.login_BadRequestIfNoBodySpecified(ApiRESTAssuredTest.java:102)
+at com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest.login_BadRequestIfNoBodySpecified(ApiRESTAssuredTest.java:102)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
@@ -128,11 +128,11 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- login_BadRequestIfNoBodySpecified -->
-        <test-method signature="login_RejectedIfWrongCredentials()[pri:0, instance:com.josepdevs.Infra.input.rest.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:44 CEST" name="login_RejectedIfWrongCredentials" finished-at="2024-06-17T16:21:44 CEST" duration-ms="55" status="PASS">
+        <test-method signature="login_RejectedIfWrongCredentials()[pri:0, instance:com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:44 CEST" name="login_RejectedIfWrongCredentials" finished-at="2024-06-17T16:21:44 CEST" duration-ms="55" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- login_RejectedIfWrongCredentials -->
-        <test-method signature="register_shouldCreateUserAndReturn201()[pri:1, instance:com.josepdevs.Infra.input.rest.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:44 CEST" name="register_shouldCreateUserAndReturn201" finished-at="2024-06-17T17:19:19 CEST" duration-ms="3454647" status="FAIL">
+        <test-method signature="register_shouldCreateUserAndReturn201()[pri:1, instance:com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T16:21:44 CEST" name="register_shouldCreateUserAndReturn201" finished-at="2024-06-17T17:19:19 CEST" duration-ms="3454647" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[1 expectation failed.
@@ -163,7 +163,7 @@ at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecific
 at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
 at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
 at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
-at com.josepdevs.Infra.input.rest.ApiRESTAssuredTest.register_shouldCreateUserAndReturn201(ApiRESTAssuredTest.java:59)
+at com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest.register_shouldCreateUserAndReturn201(ApiRESTAssuredTest.java:59)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
@@ -196,7 +196,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- register_shouldCreateUserAndReturn201 -->
-        <test-method signature="login_shouldAuthenticateAndReturn200()[pri:2, instance:com.josepdevs.Infra.input.rest.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T17:19:19 CEST" name="login_shouldAuthenticateAndReturn200" finished-at="2024-06-17T17:19:22 CEST" duration-ms="3448" status="FAIL">
+        <test-method signature="login_shouldAuthenticateAndReturn200()[pri:2, instance:com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T17:19:19 CEST" name="login_shouldAuthenticateAndReturn200" finished-at="2024-06-17T17:19:22 CEST" duration-ms="3448" status="FAIL">
           <exception class="io.restassured.path.json.exception.JsonPathException">
             <message>
               <![CDATA[Failed to parse the JSON document]]>
@@ -208,7 +208,7 @@ at io.restassured.path.json.JsonPath$4.doParseWith(JsonPath.java:967)
 at io.restassured.path.json.JsonPath$JsonParser.parseWith(JsonPath.java:1047)
 at io.restassured.path.json.JsonPath.get(JsonPath.java:202)
 at io.restassured.path.json.JsonPath.getString(JsonPath.java:352)
-at com.josepdevs.Infra.input.rest.ApiRESTAssuredTest.login_shouldAuthenticateAndReturn200(ApiRESTAssuredTest.java:74)
+at com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest.login_shouldAuthenticateAndReturn200(ApiRESTAssuredTest.java:74)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
@@ -254,7 +254,7 @@ at io.restassured.path.json.JsonPath$ExceptionCatcher.invoke(JsonPath.java:1000)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- login_shouldAuthenticateAndReturn200 -->
-        <test-method signature="deleteHard_shouldDeleteUserIfTokenBearerIsAdmin()[pri:3, instance:com.josepdevs.Infra.input.rest.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T17:19:22 CEST" name="deleteHard_shouldDeleteUserIfTokenBearerIsAdmin" finished-at="2024-06-17T17:19:22 CEST" duration-ms="77" status="FAIL">
+        <test-method signature="deleteHard_shouldDeleteUserIfTokenBearerIsAdmin()[pri:3, instance:com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest@7efaad5a]" started-at="2024-06-17T17:19:22 CEST" name="deleteHard_shouldDeleteUserIfTokenBearerIsAdmin" finished-at="2024-06-17T17:19:22 CEST" duration-ms="77" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
               <![CDATA[1 expectation failed.
@@ -285,7 +285,7 @@ at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecific
 at io.restassured.specification.ResponseSpecification$statusCode$0.callCurrent(Unknown Source)
 at io.restassured.internal.ResponseSpecificationImpl.statusCode(ResponseSpecificationImpl.groovy:143)
 at io.restassured.internal.ValidatableResponseOptionsImpl.statusCode(ValidatableResponseOptionsImpl.java:89)
-at com.josepdevs.Infra.input.rest.ApiRESTAssuredTest.deleteHard_shouldDeleteUserIfTokenBearerIsAdmin(ApiRESTAssuredTest.java:93)
+at com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest.deleteHard_shouldDeleteUserIfTokenBearerIsAdmin(ApiRESTAssuredTest.java:93)
 at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 at java.base/java.lang.reflect.Method.invoke(Method.java:580)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
@@ -318,7 +318,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           <reporter-output>
           </reporter-output>
         </test-method> <!-- deleteHard_shouldDeleteUserIfTokenBearerIsAdmin -->
-      </class> <!-- com.josepdevs.Infra.input.rest.ApiRESTAssuredTest -->
+      </class> <!-- com.josepedevs.infra.input.rest.authenticationdata.ApiRESTAssuredTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
