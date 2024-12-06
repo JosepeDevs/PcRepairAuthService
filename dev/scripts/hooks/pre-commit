@@ -1,0 +1,25 @@
+#!bin/bash
+#Run formatting on pre-commit
+
+#Get the list of changed files
+files=$(git status --porcelain | cut -c 4-)
+
+#Exit early if there are not changed files
+if [ -z "$files" ]; then
+    echo "No changes detected"
+    exit 0
+fi
+
+#Prepare the files for spotless
+wholelist=''
+for file in $files
+do
+    wholelist+=(.*)$(basename $f)$'\n'
+done
+list=$(echo -e $wholelist) | paste -s -d, /dev/stdin)
+
+#Debugginf: Display the files being processed
+echo "Formatting files: $list"
+
+#Run spotless
+mvn spotless:apply -DspotlessFiles="$list" -Dspotless.check.skip=false

@@ -1,0 +1,67 @@
+# docker-compose -f dev/docker/docker-compose.yml up -d
+# connection url will look like → jdbc:oracle:thin:@//localhost:1521/pctaller
+services:
+  oracle:
+    image: gvenzl/oracle-xe
+    ports:
+      - 1521:1521
+    environment:
+      ORACLE_PASSWORD: ${DB_PSSWRD}
+      ORACLE_DBNAME: pctaller
+      APPLICATION_USER_PASSWORD: ${DB_PSSWRD}
+      APPLICATION_USER_NAME: ${DB_USER}
+
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./oracle-init.sql:/docker-entrypoint-initdb.d/oracle-init.sql
+    healthcheck:
+      test: ["CMD","ECHO SELECT 1 FROM dual","sqlplus -s test_user/contra@//localhost:1521/pc_taller_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: pctaller
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PSSWRD}
+    volumes:
+      - ./postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql
+      - ./postgres.conf:/etc/postgresql/postgresql.conf
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  redis:
+    image: redis
+    restart: always
+    command: redis-server
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+
+  spring:
+    depends_on:
+      - oracle
+      - postgres
+    build: dev/scripts
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pc_taller_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: contra
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+      SPRING_JPA_GENERATE_DDL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_USE_SQL_COMMENTS: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_GENERATE_STATISTICS: true
+volumes:
+  oracle-data:

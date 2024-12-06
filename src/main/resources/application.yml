@@ -16,12 +16,28 @@ spring:
         "[format_sql]": true
         "[show_sql]": true
         "[default_schema]": pctaller
+
 server:
-  port: 6666 
+  port: 6666
 logging:
   level:
    "[org.springframework.web]": INFO
    "[org.springframework.security]": DEBUG
+
+app:
+  datasources:
+    docker:
+      datasource:
+        jdbcUrl: ${DB_URL}
+        username: ${DB_USER}
+        password: ${DB_PSSWRD}
+        driverClassName: org.postgresql.Driver
+      jpa:
+        properties:
+          hibernate:
+            "[format_sql]": true
+            "[show_sql]": true
+            "[default_schema]": pctaller
 
 # This is a custom setting for Jwt that I need in my app but I want to keep secured
 myconfig:
@@ -29,8 +45,9 @@ myconfig:
     jwt:
       SECRET_KEY: ${SECRET_KEY}
       expirationMinutes: 15 #minutes
+      TEST_TOKEN: ${TEST_TOKEN}
       #refresh-token:
-      #  expiration: 60 # minutes
+      #  expiration: 60 # minutes (not yet implemented)
       
 eureka:
   client:
@@ -68,6 +85,23 @@ resilience4j:
         automaticTransitionFromOpenToHalfOpenEnabled: true # false would imply that it is left open after failures 
         permittedNumberOfCallsInHalfOpenState: 5 # number of request to evaluate threshold again (whithin open-close), if for example, 5 at least 4 should fail to go again to "open"
         # waitDurationInSecondsOpenState: 1s # once the threshold is not reached, this is the time to switch to closed again.
-
-
-
+logbook:
+  format:
+    style: JSON # Logbook outputs requests/responses in JSON Format
+  include:
+    headers: true
+    body: true
+    path:
+      - /api/v1/noauth/**
+      - /otra/url
+  exclude:
+    -api/v1/admin/**
+  obfuscate:
+    headers:
+      - Authorization
+      - X-auth-token
+      - X-security-token
+      - X-secret
+    parameters:
+      - password
+      - access_token
