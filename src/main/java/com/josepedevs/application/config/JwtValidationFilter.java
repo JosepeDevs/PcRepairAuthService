@@ -1,9 +1,14 @@
 package com.josepedevs.application.config;
 
-import java.io.IOException;
- 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.josepedevs.application.service.JwtDataExtractorService;
+import com.josepedevs.application.service.JwtOwnerValidator;
+import com.josepedevs.domain.repository.AuthenticationDataRepository;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,27 +18,19 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.josepedevs.domain.repository.AuthenticationDataRepository;
-import com.josepedevs.application.service.JwtTokenDataExtractorService;
-import com.josepedevs.application.service.JwtTokenValidations;
-
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtValidationFilter extends OncePerRequestFilter {
 
-	private final JwtTokenDataExtractorService jwtTokenReaderService;
-	private final JwtTokenValidations jwtValidations;
+	private final JwtDataExtractorService jwtTokenReaderService;
 	private final UserDetailsService userDetailsService;
 	private final AuthenticationDataRepository repository;
-	private final Logger logger = LoggerFactory.getLogger(JwtValidationFilter.class);
+	private final JwtOwnerValidator jwtOwnerValidator;
 
-	
+
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
 			throws ServletException, IOException {
@@ -44,7 +41,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		
 		if(authorizationHeader == null || ! authorizationHeader.startsWith("Bearer ")) {
 			//if not authorized
-			logger.info("No token found, JwtValidationFilter skipped");
+			log.info("No token found, JwtValidationFilter skipped");
 			filterChain.doFilter(request, response);
 			return; //this is included to stop execution after calling filterChain.
 		}
@@ -58,8 +55,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null ) {
 			//get user details from database
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			logger.trace("test");
-			if( jwtValidations.isUserTokenCompletelyValidated(jwtToken, userDetails) ){
+			if( jwtOwnerValidator.isTokenOwnerValid(jwtToken, userDetails) ){
 				//by being able to create this token we have secured this request
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				//convert HttpServlet request class into WebAuthenticationDetails Spring class equivalent to request
@@ -70,7 +66,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			};
 		}
-		logger.info("JwtValidationFilter finished checking, continuing to next filter...");
+		log.info("JwtValidationFilter finished checking, continuing to next filter...");
 		filterChain.doFilter(request, response);
 	}
 

@@ -1,16 +1,16 @@
 package com.josepedevs.domain.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @Data
 @SuperBuilder(toBuilder = true)
-@AllArgsConstructor
-public class PatchUserRoleRequest {
+public class InvalidateTokenRequest {
 
     private final String jwtToken;
-    private final String id;
-    private final String role;
+
+    private final UUID authDataId;
 
 }

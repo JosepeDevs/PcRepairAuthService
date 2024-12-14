@@ -1,6 +1,6 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
-import com.josepedevs.application.service.JwtTokenValidations;
+import com.josepedevs.application.service.JwtMasterValidator;
 import com.josepedevs.domain.entity.AuthenticationData;
 import com.josepedevs.domain.exceptions.UserNotFoundException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
@@ -17,17 +17,15 @@ import java.util.List;
 public class GetAllAuthenticationDataUseCaseImpl implements GetAllAuthenticationDataUseCase {
 
 	private final AuthenticationDataRepository repository;
-	private final JwtTokenValidations jwtValidations;
+	private final JwtMasterValidator jwtMasterValidator;
 
 	public List<AuthenticationData> apply(String jwtToken) {
-
 		log.info("Checking if user in token is an admin: {}.", jwtToken);
-		final var isUserAnAdmin = jwtValidations.isAdminTokenCompletelyValidated(jwtToken);
+		final var isUserAnAdmin = jwtMasterValidator.isAdminTokenCompletelyValidated(jwtToken);
 
 		if(!isUserAnAdmin){
 			throw new UserNotFoundException("The user was not found or the token did not contain the required data.");
 		}
 		return repository.getAll();
-
 	}
 }

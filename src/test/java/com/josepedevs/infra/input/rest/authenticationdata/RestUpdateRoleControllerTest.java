@@ -2,7 +2,6 @@ package com.josepedevs.infra.input.rest.authenticationdata;
 
 import com.josepedevs.application.usecase.authenticationdata.PatchAuthenticationDataRoleUseCaseImpl;
 import com.josepedevs.domain.request.PatchUserRoleRequest;
-import com.josepedevs.domain.request.UpdateRoleRequest;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,58 +17,57 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RestUpdateRoleControllerTest {
+class RestUpdateRoleControllerTest {
 	
-	@Mock
-	PatchAuthenticationDataRoleUseCaseImpl patchAuthenticationDataRoleUseCaseImpl;
-
 	@InjectMocks
-	RestUpdateRoleController controller;
+	private RestUpdateRoleController controller;
 
-	private EasyRandom easyRandom = new EasyRandom();
+	@Mock
+	private PatchAuthenticationDataRoleUseCaseImpl patchAuthenticationDataRoleUseCaseImpl;
 
 	  @Test
 	    void patchRole_ShouldReturnNoContentIfRoleChanged() {
 	        String jwtToken = "Bearer tokenValue";
-	        String tokenValue = "tokenValue";
-	        String role = "admin"; 
+	        String jwtTokenValue = "tokenValue";
+	        String role = "admin";
 	        String id = UUID.randomUUID().toString();
 
 		  final var request = PatchUserRoleRequest.builder()
-				  .jwtToken(jwtToken)
-				  .updateRoleRequest(UpdateRoleRequest.builder().id(id).role(role).build())
+				  .jwtToken(jwtTokenValue)
+				  .id(id)
+				  .role(role)
 				  .build();
 
-	        boolean roleChanged = true;
+	        Boolean roleChanged = true;
 
 	        when(patchAuthenticationDataRoleUseCaseImpl.apply(request)).thenReturn(roleChanged);
 
-	        // When
-	        ResponseEntity<Boolean> finalResult = controller.patchRole(request.getJwtToken(), request.getUpdateRoleRequest());
+	        ResponseEntity<Boolean> finalResult = controller.patchRole(jwtToken, request);
 
-	        // Then
-	        verify(patchAuthenticationDataRoleUseCaseImpl, times(1)).apply(request);
 	        assertEquals(HttpStatus.NO_CONTENT, finalResult.getStatusCode());
 			assertEquals(roleChanged,finalResult.getBody());
     }
 
 	@Test
 	void patchRole_ShouldReturnResponseStatusBadRequestIfRoleWasNotChanged (){
-        String jwtToken = "Bearer tokenValue";
-        String tokenValue = "tokenValue";
-        String role = "admin"; 
-        String id = UUID.randomUUID().toString(); 
-        
-        UpdateRoleRequest request = new UpdateRoleRequest(id, role); 
-		final var patchRequest = this.easyRandom.nextObject(PatchUserRoleRequest.class);
-        boolean roleChanged = false;
+		String jwtToken = "Bearer tokenValue";
+		String jwtTokenValue = "tokenValue";
+		String role = "admin";
+		String id = UUID.randomUUID().toString();
 
-        when(patchAuthenticationDataRoleUseCaseImpl.apply(patchRequest)).thenReturn(roleChanged);
+		final var request = PatchUserRoleRequest.builder()
+				.jwtToken(jwtTokenValue)
+				.id(id)
+				.role(role)
+				.build();
 
-        ResponseEntity<Boolean> finalResult = controller.patchRole(jwtToken, request);
+		Boolean roleChanged = false;
 
-        verify(patchAuthenticationDataRoleUseCaseImpl, times(1)).apply(patchRequest);
-		assertEquals(HttpStatus.BAD_REQUEST, finalResult.getStatusCode()); 
+		when(patchAuthenticationDataRoleUseCaseImpl.apply(request)).thenReturn(roleChanged);
+
+		ResponseEntity<Boolean> finalResult = controller.patchRole(jwtToken, request);
+
+		assertEquals(HttpStatus.BAD_REQUEST, finalResult.getStatusCode());
 		assertEquals(roleChanged,finalResult.getBody());
 	}
 	

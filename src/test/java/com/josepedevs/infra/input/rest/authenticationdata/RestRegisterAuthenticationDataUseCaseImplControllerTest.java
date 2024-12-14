@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RegisterAuthenticationDataUseCaseImplControllerTest {
+public class RestRegisterAuthenticationDataUseCaseImplControllerTest {
 	
 	@Mock
 	RegisterAuthenticationDataUseCaseImpl registerAuthenticationDataUseCaseImplUseCase;
@@ -45,7 +45,7 @@ public class RegisterAuthenticationDataUseCaseImplControllerTest {
 
 	@Test
 	void  registerRetry_ShouldBeExecutedIfCustomExceptionHappens (){
-		BusyOrDownServerException exception = new BusyOrDownServerException("mensaje","atributo");
+		BusyOrDownServerException exception = new BusyOrDownServerException("mensaje");
 		ResponseEntity<String> finalResult = controller.registerRetry(exception);
 
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, finalResult.getStatusCode());

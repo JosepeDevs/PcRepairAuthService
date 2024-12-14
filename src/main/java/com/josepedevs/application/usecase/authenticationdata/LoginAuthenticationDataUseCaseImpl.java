@@ -1,7 +1,8 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
-import com.josepedevs.application.service.GetUserFromTokenUsernameService;
-import com.josepedevs.application.service.JwtTokenIssuerService;
+import com.josepedevs.application.service.AuthDataFinder;
+import com.josepedevs.application.service.JwtIssuerService;
+import com.josepedevs.application.service.JwtRoleValidator;
 import com.josepedevs.domain.exceptions.TokenNotValidException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
 import com.josepedevs.domain.request.AuthenticationRequest;
@@ -23,14 +24,15 @@ public class LoginAuthenticationDataUseCaseImpl implements LoginAuthenticationDa
 
 	private final AuthenticationManager authenticationManager;
 	private final AuthenticationDataRepository repository;
-	private final JwtTokenIssuerService jwtService;
-	private final GetUserFromTokenUsernameService getUserFromTokenUsernameService;
+	private final JwtIssuerService jwtService;
+	private final AuthDataFinder authDataFinder;
 
 	public AuthenticationResponse apply(AuthenticationRequest request) {
+
 		final var  username = request.getUsername();
 		final var newPasswordAuthToken = new UsernamePasswordAuthenticationToken(username, request.getPsswrd());
     	authenticationManager.authenticate(newPasswordAuthToken);
-		final var userDataAuth = getUserFromTokenUsernameService.getUserFromTokenUsername(username);
+		final var userDataAuth = authDataFinder.findByUsername(username);
 	    
 	    Map<String, Object> extraClaims = new HashMap<>();
 	    extraClaims.put("authorities", userDataAuth.getAuthorities()); 
@@ -39,9 +41,9 @@ public class LoginAuthenticationDataUseCaseImpl implements LoginAuthenticationDa
 	    boolean success = repository.login(userDataAuth, jwtToken);
 	    if( ! success) {
 	    	log.error("The token was not saved correctly to currentToken");
-	    	throw new TokenNotValidException("The generated token could not be saved to the user or the login failed for other reason", "TokenNotValidException");
+	    	throw new TokenNotValidException("The generated token could not be saved to the user or the login failed for other reason");
 	    }        	
-    	log.trace("Returning token");
+    	log.trace("Returning token.");
 
 	    return AuthenticationResponse.builder()
 	           .token(jwtToken)

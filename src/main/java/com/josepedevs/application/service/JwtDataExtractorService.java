@@ -17,10 +17,10 @@ import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
-public class JwtTokenDataExtractorService {
+public class JwtDataExtractorService {
 	
-	JwtTokenIssuerService jwtTokenIssuerService;
-	private final Logger logger = LoggerFactory.getLogger(JwtTokenDataExtractorService.class);
+	JwtIssuerService jwtIssuerService;
+	private final Logger logger = LoggerFactory.getLogger(JwtDataExtractorService.class);
 
 	/**
 	 * parse a JSON Web Token (JWT) and extract all its claims
@@ -28,7 +28,7 @@ public class JwtTokenDataExtractorService {
 	 * @return Claims (all the payLoad/Body)
 	 */
 	public Claims extractAllClaims(String jwtToken) {
-	    SecretKey secretSigningKey = jwtTokenIssuerService.getSecretSigningKey();
+	    SecretKey secretSigningKey = jwtIssuerService.getSecretSigningKey();
 
 	    //montamos el parser, añadiendo la secret key
 		final var  jwsParser = Jwts .parser().verifyWith(secretSigningKey).build();
@@ -52,7 +52,7 @@ public class JwtTokenDataExtractorService {
 	    logger.trace("Extracting specific type of claim from token");
 		return claimsTypeResolver.apply(allClaims);
 	}
-	
+
 	/**
 	 * Given a token extracts all claims, then extracts claim of type equal to getSubject (String)
 	 * @param jwtToken

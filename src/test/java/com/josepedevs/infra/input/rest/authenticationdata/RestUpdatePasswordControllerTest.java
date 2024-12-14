@@ -2,6 +2,7 @@ package com.josepedevs.infra.input.rest.authenticationdata;
 
 import com.josepedevs.application.usecase.authenticationdata.PatchAuthenticationDataPasswordUseCaseImpl;
 import com.josepedevs.domain.request.PatchUserPasswordRequest;
+import com.josepedevs.infra.input.rest.authenticationdata.mapper.RestAuthenticationDataMapper;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,32 +12,48 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class RestUpdatePasswordControllerTest {
-
-		@Mock
-		PatchAuthenticationDataPasswordUseCaseImpl patchAuthenticationDataPasswordUseCaseImplUseCase;
+class RestUpdatePasswordControllerTest {
 
 		@InjectMocks
-		RestUpdatePasswordController controller;
+		private RestUpdatePasswordController controller;
 
-		private EasyRandom easyRandom = new EasyRandom();
+		@Mock
+		private RestAuthenticationDataMapper mapper;
+
+		@Mock
+		private PatchAuthenticationDataPasswordUseCaseImpl patchAuthenticationDataPasswordUseCaseImplUseCase;
+
+		private final EasyRandom easyRandom = new EasyRandom();
 
 		@Test
 		void newpassword_ShouldReturnStatusResponseBadRequestIfNoChangeWasMade (){
-
-			String jwtToken ="tokenValue";
-			String  newpsswrd ="123";
-			boolean psswrdWasNotChanged = true;
-			boolean bodyResponse = false; // because it failed
-			final var request = easyRandom.nextObject(PatchUserPasswordRequest.class);
+			// Arrange
+			final var jwtToken ="Bearer tokenValue";
+			final var jwtTokenValue ="tokenValue";
+			final var newpsswrd ="123";
+			final var authDataId = UUID.randomUUID();
+			final var psswrdWasNotChanged = true;
+			final var bodyResponse = false;
+			final var request = easyRandom.nextObject(PatchUserPasswordRequest.class)
+					.toBuilder()
+					.jwtToken(jwtTokenValue)
+					.authDataId(authDataId)
+					.newPassword(newpsswrd)
+					.build();
 
 			when(patchAuthenticationDataPasswordUseCaseImplUseCase.apply(request)).thenReturn(psswrdWasNotChanged);
-			ResponseEntity<Boolean> finalResult = controller.newpassword(jwtToken, newpsswrd);
-			
+			when(mapper.map(jwtTokenValue, authDataId, newpsswrd)).thenReturn(request);
+
+			// Act
+			ResponseEntity<Boolean> finalResult = controller.newpassword(jwtToken, authDataId, newpsswrd);
+
+			// Assert
 			assertEquals(HttpStatus.BAD_REQUEST,finalResult.getStatusCode());
 			assertEquals(bodyResponse,finalResult.getBody());
 
@@ -44,22 +61,22 @@ public class RestUpdatePasswordControllerTest {
 		
 		@Test
 		void newpassword_ShouldReturnStatusResponseNoResponseIfPasswordWasUpdated(){
-
-			String jwtToken ="tokenValue";
+			// Arrange
+			final var jwtToken ="Bearer tokenValue";
+			final var jwtTokenValue ="tokenValue";
 			String  newpsswrd ="123";
-			
+			final var authDataId = UUID.randomUUID();
 			boolean psswrdWasNotChanged = false;
 			boolean bodyResponse = true;
-			final var request = easyRandom.nextObject(PatchUserPasswordRequest.class);
+			final var request = easyRandom.nextObject(PatchUserPasswordRequest.class).toBuilder().jwtToken(jwtToken).authDataId(authDataId).newPassword(newpsswrd).build();
 
 			when(patchAuthenticationDataPasswordUseCaseImplUseCase.apply(request)).thenReturn(psswrdWasNotChanged);
-			ResponseEntity<Boolean> finalResult = controller.newpassword(jwtToken, newpsswrd);
-			
+			when(mapper.map(jwtTokenValue, authDataId, newpsswrd)).thenReturn(request);
+			// Act
+			ResponseEntity<Boolean> finalResult = controller.newpassword(jwtToken, authDataId, newpsswrd);
+			// Assert
 			assertEquals(HttpStatus.NO_CONTENT,finalResult.getStatusCode());
 			assertEquals(bodyResponse,finalResult.getBody());
 
 		}
-		
-		
-		
 }

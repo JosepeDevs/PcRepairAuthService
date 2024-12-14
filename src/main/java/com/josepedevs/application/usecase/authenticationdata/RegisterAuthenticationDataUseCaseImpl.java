@@ -1,6 +1,6 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
-import com.josepedevs.application.service.JwtTokenIssuerService;
+import com.josepedevs.application.service.JwtIssuerService;
 import com.josepedevs.domain.entity.AuthenticationData;
 import com.josepedevs.domain.exceptions.UserAlreadyExistsException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
@@ -20,7 +20,7 @@ public class RegisterAuthenticationDataUseCaseImpl implements RegisterAuthentica
 
 	private final AuthenticationDataRepository repository;
 	private final PasswordEncoder passwordEncoder;
-	private final JwtTokenIssuerService jwtService;
+	private final JwtIssuerService jwtService;
 	private final Logger logger = LoggerFactory.getLogger(RegisterAuthenticationDataUseCaseImpl.class);
 
 	@Override
@@ -31,10 +31,10 @@ public class RegisterAuthenticationDataUseCaseImpl implements RegisterAuthentica
 		
 		if(repository.findByUsername(username).isPresent()) {
 			logger.error("the username was already in use.");
-			throw new UserAlreadyExistsException("That username is not available/allowed.", "username");
+			throw new UserAlreadyExistsException("That username is not available/allowed.");
 		} else if(repository.findByEmail(email).isPresent()) {
 			logger.error("email was already in use.");
-			throw new UserAlreadyExistsException("That email is not available/allowed.", "email");
+			throw new UserAlreadyExistsException("That email is not available/allowed.");
 		} else {
 			final var userAuthData = AuthenticationData.builder()
 					.email(request.getEmail())

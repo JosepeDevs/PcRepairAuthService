@@ -29,7 +29,7 @@ public class RestGetAllRegisteredControllerTest {
     private RestGetAllRegisteredController controller; //class being tested
 
     @Test
-    void getAll_ShouldReturnAListAndResponseStatusOk() throws Exception {
+    void getAll_ShouldReturnAListAndResponseStatusOk() {
     	//prepare inputs
     	//we will have a token (it will be validated in other tests), here any string will do
     	String jwtToken = "$2a$10$fTW3mvR1ZeXalGlCzpLknuAilhC9JA/.X6xeW6gcvFQxV.ex1/jIe";
@@ -78,7 +78,6 @@ public class RestGetAllRegisteredControllerTest {
 									
         
         //prepare return results from dependencies, no matter what I write in the token it will return the specified data
-        //this is the Getmapping
 		when(useCase.apply(anyString())).thenReturn(mockDataList);
 
 		//here controller calls the actual method that its executed 
@@ -98,7 +97,7 @@ public class RestGetAllRegisteredControllerTest {
     void getFallbackRegisteredBulkHead_ShouldReturnErrorMessageAndResponseStatusTooManyRequest429() {
     	//simulate the condition under which the fallback method should be invoked
     	//create an instance of the exception but do not throw it
-    	RequestNotPermittedException exception = new RequestNotPermittedException("Texto de error", "Parametro");
+    	RequestNotPermittedException exception = new RequestNotPermittedException("Texto de error");
     	
     	//call the controller and pass the created exception as parameter
         ResponseEntity<String> result = controller.getFallbackRegisteredBulkHead(exception);
@@ -109,9 +108,4 @@ public class RestGetAllRegisteredControllerTest {
         assertNotNull(result.getBody());
     }
     
-    
- 
-    
 }
-
-

@@ -17,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 @ConfigurationProperties(prefix = "myconfig.security.jwt")
-public class JwtTokenIssuerService {
+public class JwtIssuerService {
 	
 	//this make it take the value from the application.yml
 	@Value("${myconfig.security.jwt.SECRET_KEY}")
@@ -26,7 +26,7 @@ public class JwtTokenIssuerService {
 	@Value("${myconfig.security.jwt.expirationMinutes}")
 	private int expirationMinutes;
 	
-	private JwtTokenDataExtractorService tokenReaderService;
+	private JwtDataExtractorService tokenReaderService;
 	
 	//not private but package limited to be calleable by jwtToken Reader service
 	SecretKey getSecretSigningKey() {

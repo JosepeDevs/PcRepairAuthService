@@ -27,19 +27,16 @@ public class ApplicationConfig {
 		return new UserDetailsService() {
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-				// TODO Auto-generated method stub
 				return repository.findByUsername(username).orElseThrow( () -> new UsernameNotFoundException("User not found when authenticating"));
 			}
 		};
 	}
-    
-    
+
     @Bean
     public PasswordEncoder passwordEncoder() {
     	return new BCryptPasswordEncoder();
     }
-    
-    
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
     	DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -52,5 +49,4 @@ public class ApplicationConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
       return config.getAuthenticationManager();
     }
-	
 }

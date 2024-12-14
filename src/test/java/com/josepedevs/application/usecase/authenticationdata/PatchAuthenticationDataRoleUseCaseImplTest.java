@@ -1,71 +1,58 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
-import com.josepedevs.application.service.GetUserFromTokenIdService;
-import com.josepedevs.application.service.GetUserFromTokenUsernameService;
-import com.josepedevs.application.service.JwtTokenDataExtractorService;
-import com.josepedevs.application.service.JwtTokenValidations;
+import com.josepedevs.application.service.AuthDataFinder;
+import com.josepedevs.application.service.JwtMasterValidator;
 import com.josepedevs.domain.entity.AuthenticationData;
+import com.josepedevs.domain.exceptions.TokenNotValidException;
 import com.josepedevs.domain.mapper.AuthDataMapper;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
 import com.josepedevs.domain.request.PatchUserRoleRequest;
-import com.josepedevs.domain.request.UpdateRoleRequest;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PatchAuthenticationDataRoleUseCaseImplTest {
-
-    private AuthenticationDataRepository repository = mock(AuthenticationDataRepository.class);
-    private GetUserFromTokenUsernameService getUserFromTokenUsernameService = mock(GetUserFromTokenUsernameService.class);
-    private GetUserFromTokenIdService getUserFromTokenIdService = mock(GetUserFromTokenIdService.class);
-    private JwtTokenDataExtractorService jwtReaderService = mock(JwtTokenDataExtractorService.class);
-    private JwtTokenValidations jwtValidations = mock(JwtTokenValidations.class);
-    private AuthDataMapper authDataMapper = mock(AuthDataMapper.class);
-
-    private final EasyRandom easyRandom = new EasyRandom();
+class PatchAuthenticationDataRoleUseCaseImplTest {
 
     @InjectMocks
     private PatchAuthenticationDataRoleUseCaseImpl useCase;
+    @Mock
+    private  AuthenticationDataRepository repository;
+    @Mock
+    private  AuthDataFinder authDataFinder;
+    @Mock
+    private  JwtMasterValidator jwtMasterValidator;
+    @Mock
+    private  AuthDataMapper mapper;
+
 
     @Test
-    void pathRole_ShouldUpdateRoleCorrectly() {
+    void patchRole_ShouldUpdateRoleCorrectly() {
 
         String jwtToken = "jwtToken";
         String roleToBeSetted = "EDITOR";
         UUID idUser = UUID.randomUUID();
-        UUID idAdmin = UUID.randomUUID();
-        boolean tokenIsFromAdmin = true;
 
-        UpdateRoleRequest request = UpdateRoleRequest.builder().id(idUser.toString()).role(roleToBeSetted).build();
-        final var loggedAdmin = AuthenticationData.builder().role("ADMIN").idUser(idAdmin).username("usernameOfAnAdmin").build();
+        final var request = PatchUserRoleRequest.builder().jwtToken(jwtToken).id(idUser.toString()).role(roleToBeSetted).build();
         final var userToBeModified = AuthenticationData.builder().role("USER").idUser(idUser).username("usernameOfUserToBeModified").build();
-        final var request2 = this.easyRandom.nextObject(PatchUserRoleRequest.class);
+        final var userModified = AuthenticationData.builder().role(roleToBeSetted).idUser(idUser).username("usernameOfUserToBeModified").build();
 
-        final var authData = authDataMapper.map(request);
+        when(repository.registerUserAuthData(userToBeModified, jwtToken)).thenReturn(userModified);
+        when(authDataFinder.findById(userToBeModified.getIdUser())).thenReturn(userToBeModified);
+        when(mapper.map(request)).thenReturn(userToBeModified);
+        when(jwtMasterValidator.isAdminTokenCompletelyValidated(jwtToken)).thenReturn(true);
 
-        when(jwtReaderService.extractUsername(jwtToken)).thenReturn(loggedAdmin.getRole());
-        when(getUserFromTokenIdService.getUserFromTokenId(idUser)).thenReturn(userToBeModified);
-        when(jwtValidations.isAdminTokenCompletelyValidated(jwtToken)).thenReturn(tokenIsFromAdmin);
-        when(repository.registerUserAuthData(userToBeModified, jwtToken)).thenReturn(userToBeModified);
-
-        when(repository.patchRole(userToBeModified, roleToBeSetted)).thenReturn(true);
-
-        boolean finalResult = useCase.apply(request2);
-        assertNotNull( authData );//check mapstruct is working
-        assertThat( authData.getIdUser() ).isEqualTo(idUser );//check mapstruct is working
-        assertTrue( finalResult );
-        assertThat( userToBeModified.getRole() ).isEqualTo(roleToBeSetted );
-
+        boolean finalResult = useCase.apply(request);
+        assertTrue(finalResult);
     }
 
     @Test
@@ -74,27 +61,15 @@ public class PatchAuthenticationDataRoleUseCaseImplTest {
         String jwtToken = "jwtToken";
         String roleToBeSetted = "EDITOR";
         UUID idUser = UUID.randomUUID();
-        UUID idAdmin = UUID.randomUUID();
-        boolean tokenIsFromAdmin = false;
 
-        PatchUserRoleRequest request = this.easyRandom.nextObject(PatchUserRoleRequest.class).toBuilder()
-                .jwtToken(jwtToken)
-                .updateRoleRequest(UpdateRoleRequest.builder().id(idUser.toString()).role(roleToBeSetted).build())
-                .build();
+        final var request = PatchUserRoleRequest.builder().jwtToken(jwtToken).id(idUser.toString()).role(roleToBeSetted).build();
 
-        final var loggedAdmin = AuthenticationData.builder().role("ADMIN").idUser(idAdmin).username("usernameOfAnAdmin").build();
-        final var userToBeModified = AuthenticationData.builder().role("USER").idUser(idUser).username("usernameOfUserToBeModified").build();
+        when(jwtMasterValidator.isAdminTokenCompletelyValidated(jwtToken)).thenReturn(false);
 
-        when(jwtReaderService.extractUsername(jwtToken)).thenReturn(loggedAdmin.getRole());
-        when(getUserFromTokenIdService.getUserFromTokenId(idUser)).thenReturn(userToBeModified);
-        when(jwtValidations.isAdminTokenCompletelyValidated(jwtToken)).thenReturn(tokenIsFromAdmin);
-        when(repository.registerUserAuthData(userToBeModified, jwtToken)).thenReturn(userToBeModified);
-
-        when(repository.patchRole(userToBeModified, roleToBeSetted)).thenReturn(true);
-
-        final var finalResult = useCase.apply(request);
-
-        assertFalse( finalResult );
+        // Act & Assert
+        assertThrows(TokenNotValidException.class, () -> {
+            useCase.apply(request);
+        });
 
     }
 

@@ -1,7 +1,7 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
-import com.josepedevs.application.service.GetUserFromTokenUsernameService;
-import com.josepedevs.application.service.JwtTokenIssuerService;
+import com.josepedevs.application.service.AuthDataFinder;
+import com.josepedevs.application.service.JwtIssuerService;
 import com.josepedevs.domain.entity.AuthenticationData;
 import com.josepedevs.domain.exceptions.MyAuthenticationException;
 import com.josepedevs.domain.exceptions.TokenNotValidException;
@@ -17,8 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,13 +35,13 @@ class LoginAuthenticationDataUseCaseImplTest {
         private AuthenticationDataRepository repository;
 
         @Mock
-        private GetUserFromTokenUsernameService getUserService;
+        private AuthDataFinder getUserService;
 
         @Mock
         private AuthenticationManager authenticationManager;
 
         @Mock
-        private JwtTokenIssuerService jwtService;
+        private JwtIssuerService jwtService;
 
         private final EasyRandom easyRandom = new EasyRandom();
 
@@ -61,8 +59,8 @@ class LoginAuthenticationDataUseCaseImplTest {
                     .token(authData.getCurrentToken())
                     .build();
 
-            when(getUserService.getUserFromTokenUsername(authRequest.getUsername())).thenReturn(authData);
-            when(jwtService.generateToken(any(HashMap.class), eq(authData))).thenReturn(authData.getCurrentToken());
+            when(getUserService.findByUsername(authRequest.getUsername())).thenReturn(authData);
+            when(jwtService.generateToken(any(), eq(authData))).thenReturn(authData.getCurrentToken());
             when(repository.login(authData, authData.getCurrentToken())).thenReturn(true);
 
             // Act
@@ -75,19 +73,17 @@ class LoginAuthenticationDataUseCaseImplTest {
 
 
     @Test
-    void login_GivenInvalidAuthentication_ThenThrowsTokenNotvalidException() {
+    void login_GivenInvalidAuthentication_ThenThrowsTokenNotValidException() {
         // Arrange
         final var authData = this.easyRandom.nextObject(AuthenticationData.class);
-
-        when(getUserService.getUserFromTokenUsername(authData.getUsername())).thenReturn(authData);
-        when(jwtService.generateToken(any(HashMap.class), eq(authData))).thenReturn(authData.getCurrentToken());
+        final var request = AuthenticationRequest.builder().username(authData.getUsername()).psswrd(authData.getPassword()).build();
+        when(getUserService.findByUsername(authData.getUsername())).thenReturn(authData);
+        when(jwtService.generateToken(any(), eq(authData))).thenReturn(authData.getCurrentToken());
         when(repository.login(authData, authData.getCurrentToken())).thenReturn(false);
 
         // Act & Assert
         assertThrows(TokenNotValidException.class, () -> {
-            useCase.apply(
-                    new AuthenticationRequest(authData.getUsername(),authData.getPassword())
-            );
+            useCase.apply(request);
         });
 
         verify(authenticationManager).authenticate(any());
@@ -97,15 +93,14 @@ class LoginAuthenticationDataUseCaseImplTest {
     void login_GivenInvalidAuthentication_ThenThrowsAuthenticationException() {
         // Arrange
         final var authData = this.easyRandom.nextObject(AuthenticationData.class);
+        final var request = AuthenticationRequest.builder().username(authData.getUsername()).psswrd(authData.getPassword()).build();
 
         when(authenticationManager.authenticate(any()))
-                .thenThrow(new MyAuthenticationException("Invalid credentials"));
+                .thenThrow(new MyAuthenticationException("Invalid credentials", "username"));
 
         // Act & Assert
         assertThrows(AuthenticationException.class, () -> {
-            useCase.apply(
-                    new AuthenticationRequest(authData.getUsername(),authData.getPassword())
-            );
+            useCase.apply(request);
         });
 
         verify(authenticationManager).authenticate(any());

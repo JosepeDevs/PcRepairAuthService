@@ -3,14 +3,12 @@ package com.josepedevs.domain.request;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor
 public class AuthenticationRequest {
-
-	String username;
-	String psswrd;
+	private final String jwtToken	;
+	private final String username;
+	private final String psswrd;
 }

@@ -1,32 +1,24 @@
 package com.josepedevs.domain.exceptions;
 
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.Serial;
+
 @Log4j2
+@Getter
 public class MyRuntimeException extends RuntimeException {
 	
+	@Serial
 	private static final long serialVersionUID = 1L;
-	private String myErrorMessage;
-	private String illegalAttributeName;
-	
-	//pasamos el mensaje a excepción padre y logeamos el error
+	private final String myErrorMessage;
+	private final String illegalAttributeName;
+
 	public MyRuntimeException(String myErrorMessage, String illegalAttributeName) {
-        super(myErrorMessage);
-        this.illegalAttributeName = illegalAttributeName;
+		super(myErrorMessage);
         this.myErrorMessage = myErrorMessage;
-        
-        log.error(myErrorMessage,illegalAttributeName);
-    }
-	
-	public MyRuntimeException(String message) {
-		super(message);
+        this.illegalAttributeName = illegalAttributeName;
+		log.error(myErrorMessage,illegalAttributeName);
 	}
-	
-	public String getMyErrorMessage() {
-		return this.myErrorMessage;
-	}
-	public String getIllegalAttributeName() {
-		return this.illegalAttributeName;
-	}
-	
+
 }

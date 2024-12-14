@@ -6,29 +6,27 @@ import com.josepedevs.domain.repository.AuthenticationDataRepository;
 import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata.mapper.JpaAuthenticationDataMapper;
 import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata.repository.JpaAuthenticationDataRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDataRepository {
 
     private final JpaAuthenticationDataRepository userJpaRepository;
 	private final JpaAuthenticationDataMapper mapper;
-	private final Logger logger = LoggerFactory.getLogger(JpaAuthenticationDataPostgreSqlAdapter.class);
 
-    
 	//////////////Commands////////////////
 
 	@Override
     public AuthenticationData registerUserAuthData(AuthenticationData userAuthData, String jwtToken) {
-			logger.info("registering user.");
+			log.info("registering user.");
 			userJpaRepository.save(
 					mapper.map(userAuthData));
 	        return userAuthData;
@@ -36,7 +34,7 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
 
 	@Override
 	public Optional<AuthenticationData> findByUsername(String username) {
-		logger.info("checking user by username.");
+		log.info("checking user by username.");
         return 	userJpaRepository.findByUsername(username).map(mapper::map);
 	}
 
@@ -45,80 +43,72 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
 		authData.setCurrentToken(jwtToken);
         final var savedUser = userJpaRepository.save(mapper.map(authData));
         if (savedUser.getCurrentToken().equals(jwtToken)) {
-    		logger.info("User logged in correctly.");
+			log.info("User logged in correctly.");
         	return true;
-        } else {
-        	logger.info("Login rejected.");
-        	return false;
-        }  
+        }
+		log.info("Login rejected.");
+		return false;
 	}
 
 	@Override
 	public boolean patchPassword(AuthenticationData authData, String digestedPsswrd) {
-		
-		authData.setPsswrd(digestedPsswrd);
+		final var savedAuthData = authData.toBuilder().psswrd(digestedPsswrd).build();
 		final var savedUser = mapper.map(
 				userJpaRepository.save(
-						mapper.map(authData)));
+						mapper.map(savedAuthData)));
         if( savedUser == authData) {
-        	logger.info("Passwod updated.");
-        	return false;
-        } else {
-        	logger.info("Password did not change.");
-        	return true;
-        }  
-		
+			log.info("Password did not change.");
+			return false;
+        }
+		log.info("Password updated.");
+		return true;
 	}
 
 	@Override
 	public boolean patchRole(AuthenticationData authData, String role) {
-		
 		authData.setCurrentToken(role);
         final var savedUser = mapper.map(
 				userJpaRepository.save(
 						mapper.map(authData)));
         if( savedUser == authData) {
-        	logger.error("Role was not updated.");
+			log.error("Role was not updated.");
         	return false;
-        } else {
-        	logger.info("Role updated corretly.");
-        	return true;
-        }  
-        
+        }
+		log.info("Role updated corretly.");
+		return true;
 	}
 
 	@Override
 	public List<AuthenticationData> getAll() {
-		logger.info("Accessing all authentication data.");
+		log.info("Accessing all authentication data.");
 		 return userJpaRepository.findAll()
 				 .stream()
 				 .map(mapper::map)
-				 .collect(Collectors.toList());
+				 .toList();
 	}
 
 	@Override
 	public boolean invalidateToken(AuthenticationData authData) {
-
-		authData.setCurrentToken("invalidated");
-		
+		final var newAuthData = authData.toBuilder().currentToken("invalidated").build();
         final var savedUser = mapper.map(
-				userJpaRepository.save(
-						mapper.map(authData)));
-        if( savedUser == authData) {
-        	logger.error("token was not invalidated.");
+			userJpaRepository.save(
+					mapper.map(newAuthData)));
+
+		if(Objects.equals(savedUser.getCurrentToken(), authData.getCurrentToken())) {
+			log.error("token was not invalidated.");
         	return false;
-        } else {
-        	logger.info("token invalidated correctly");
-        	return true;
-        } 
+        }
+
+		log.info("token invalidated correctly");
+		return true;
 	}
 
 	@Override
 	public boolean isTokenInvalidated(String username) {
 		final var user = userJpaRepository.findByUsername(username);
-		final var existentUser = user.orElseThrow( () -> new UserNotFoundException("User not found.","Username"));
+		final var existentUser = user.orElseThrow( () -> new UserNotFoundException("User not found."));
 		String token = existentUser.getCurrentToken();
-		logger.info("Checking value of token to determine if it is invalidated: "+ token);
+		log.info("Checking value of token to determine if it is invalidated: {}", token);
 		return ( token == null || token.equals("invalidated") );
 	}
  
@@ -139,6 +129,5 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
 	public Optional<AuthenticationData> findByEmail(String email) {
 		return userJpaRepository.findByEmail(email).map(mapper::map);
 	}
-
 
 }

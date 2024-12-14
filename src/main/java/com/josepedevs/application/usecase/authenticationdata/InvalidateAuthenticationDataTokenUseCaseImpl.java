@@ -1,8 +1,9 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
-import com.josepedevs.application.service.GetUserFromTokenUsernameService;
-import com.josepedevs.application.service.JwtTokenDataExtractorService;
+import com.josepedevs.application.service.JwtRoleValidator;
+import com.josepedevs.domain.exceptions.UserNotFoundException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
+import com.josepedevs.domain.request.InvalidateTokenRequest;
 import com.josepedevs.domain.usecase.InvalidateAuthenticationDataTokenUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,18 +12,19 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class InvalidateAuthenticationDataTokenUseCaseImpl implements InvalidateAuthenticationDataTokenUseCase {
+public class InvalidateAuthenticationDataTokenUseCaseImpl implements InvalidateAuthenticationDataTokenUseCase  {
 
 	private final AuthenticationDataRepository authenticationDataRepository;
-	private final JwtTokenDataExtractorService jwtReaderService;
-	private final GetUserFromTokenUsernameService getUserFromTokenUsernameService;
+	private final JwtRoleValidator jwtRoleValidator;
 
-	public Boolean apply(String jwtToken) {
+	public Boolean apply(InvalidateTokenRequest request) {
+		jwtRoleValidator.isTokenFromAdmin(request.getJwtToken());
 
-		final var username = jwtReaderService.extractUsername(jwtToken);
-		final var authData = getUserFromTokenUsernameService.getUserFromTokenUsername(username);
-		authData.setCurrentToken("invalidated");
-		final var  success = authenticationDataRepository.invalidateToken(authData);
+		final var optAuthData = authenticationDataRepository.findById(request.getAuthDataId());
+		if(optAuthData.isEmpty()) {
+			throw new UserNotFoundException("User not found.");
+		}
+		final var  success = authenticationDataRepository.invalidateToken(optAuthData.get());
 		if(success) {
 			log.info("The token was correctly invalidated.");
 			return true;
@@ -31,7 +33,4 @@ public class InvalidateAuthenticationDataTokenUseCaseImpl implements InvalidateA
 		return false;
 
 	}
-	
-	
-	
 }

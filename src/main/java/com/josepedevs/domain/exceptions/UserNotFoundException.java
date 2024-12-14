@@ -1,14 +1,13 @@
 package com.josepedevs.domain.exceptions;
 
+import java.io.Serial;
+
 public class UserNotFoundException  extends MyRuntimeException{
 	
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
-	//pasamos el mensaje a excepción padre y logeamos el error
-	public UserNotFoundException(String myErrorMessage, String illegalAttributeName ) {
+	public UserNotFoundException(String myErrorMessage) {
         super(myErrorMessage, UserNotFoundException.class.getName() );
     }
-	public UserNotFoundException(String message) {
-		super(message);
-	}
 }

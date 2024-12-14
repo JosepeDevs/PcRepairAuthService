@@ -1,7 +1,7 @@
 package com.josepedevs.domain.mapper;
 
 import com.josepedevs.domain.entity.AuthenticationData;
-import com.josepedevs.domain.request.UpdateRoleRequest;
+import com.josepedevs.domain.request.PatchUserRoleRequest;
 import org.mapstruct.*;
 
 @Mapper(
@@ -17,6 +17,6 @@ public interface AuthDataMapper {
     @Mapping(target = "currentToken", ignore = true)
     @Mapping(target = "active", ignore = true)
     @Mapping( target="idUser", source="id")
-    AuthenticationData map(UpdateRoleRequest updateRoleRequest);
+    AuthenticationData map(PatchUserRoleRequest patchUserRoleRequest);
 
 }

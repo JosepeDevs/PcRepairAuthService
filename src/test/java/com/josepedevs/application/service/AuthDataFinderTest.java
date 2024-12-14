@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GetUserFromTokenIdServiceTest {
+class AuthDataFinderTest {
 
     @Test
-    void getUserFromTokenId() {
+    void findById() {
     }
 }

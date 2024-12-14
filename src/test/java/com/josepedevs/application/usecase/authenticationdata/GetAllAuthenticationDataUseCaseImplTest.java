@@ -1,6 +1,6 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
-import com.josepedevs.application.service.JwtTokenValidations;
+import com.josepedevs.application.service.JwtMasterValidator;
 import com.josepedevs.domain.entity.AuthenticationData;
 import com.josepedevs.domain.exceptions.UserNotFoundException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
@@ -13,11 +13,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GetAllAuthenticationDataUseCaseImplTest {
+class GetAllAuthenticationDataUseCaseImplTest {
 
 	@InjectMocks
 	private GetAllAuthenticationDataUseCaseImpl useCase;
@@ -26,7 +27,7 @@ public class GetAllAuthenticationDataUseCaseImplTest {
 	private AuthenticationDataRepository repository;
 
 	@Mock
-	private JwtTokenValidations jwtValidations;
+	private JwtMasterValidator jwtMasterValidator;
 
 	private final EasyRandom easyRandom = new EasyRandom();
 
@@ -37,7 +38,7 @@ public class GetAllAuthenticationDataUseCaseImplTest {
 		final var authDataList = List.of(authData);
 
 		when(repository.getAll()).thenReturn(authDataList);
-		when(jwtValidations.isAdminTokenCompletelyValidated(authData.getCurrentToken())).thenReturn(true);
+		when(jwtMasterValidator.isAdminTokenCompletelyValidated(authData.getCurrentToken())).thenReturn(true);
 
 		final var finalResult = useCase.apply(authData.getCurrentToken());
 
@@ -46,13 +47,13 @@ public class GetAllAuthenticationDataUseCaseImplTest {
 	
 	@Test
 	void apply_GivenNonFoundUserOrNotAdminRole_ThenReturnsException() {
+		final var token = "Bearer token";
+		final var authData = this.easyRandom.nextObject(AuthenticationData.class).toBuilder().currentToken(token).build();
 
-		final var authData = this.easyRandom.nextObject(AuthenticationData.class);
-
-		when(jwtValidations.isAdminTokenCompletelyValidated(authData.getCurrentToken())).thenReturn(false);
+		when(jwtMasterValidator.isAdminTokenCompletelyValidated(authData.getCurrentToken())).thenReturn(false);
 
 		 assertThrows(UserNotFoundException.class, () -> {
-			 this.useCase.apply(authData.getCurrentToken());
+			 this.useCase.apply(token);
          });
 	}
 

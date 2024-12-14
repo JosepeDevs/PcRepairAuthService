@@ -1,14 +1,16 @@
 package com.josepedevs.domain.exceptions;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.Serial;
+
+@Slf4j
 public class InadequateRoleException  extends MyRuntimeException{
-	
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
-	//pasamos el mensaje a excepción padre y logeamos el error
-	public InadequateRoleException(String myErrorMessage, String illegalAttributeName ) {
-        super(myErrorMessage, InadequateRoleException.class.getName() );
+	public InadequateRoleException(String myErrorMessage) {
+		super(myErrorMessage, InadequateRoleException.class.getName());
     }
-	public InadequateRoleException(String message) {
-		super(message);
-	}
 }
