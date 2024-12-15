@@ -2,7 +2,6 @@ package com.josepedevs.application.usecase.authenticationdata;
 
 import com.josepedevs.application.service.AuthDataFinder;
 import com.josepedevs.application.service.JwtIssuerService;
-import com.josepedevs.application.service.JwtRoleValidator;
 import com.josepedevs.domain.exceptions.TokenNotValidException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
 import com.josepedevs.domain.request.AuthenticationRequest;
@@ -38,7 +37,7 @@ public class LoginAuthenticationDataUseCaseImpl implements LoginAuthenticationDa
 	    extraClaims.put("authorities", userDataAuth.getAuthorities()); 
 
 	    var jwtToken = jwtService.generateToken(extraClaims, userDataAuth);
-	    boolean success = repository.login(userDataAuth, jwtToken);
+	    boolean success = repository.updateToken(userDataAuth, jwtToken);
 	    if( ! success) {
 	    	log.error("The token was not saved correctly to currentToken");
 	    	throw new TokenNotValidException("The generated token could not be saved to the user or the login failed for other reason");

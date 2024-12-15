@@ -8,9 +8,9 @@ import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testng.annotations.Test;
 
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class ApiRESTAssuredIT {
 	/**
 	 * Test of a pack, if separated or modified the database could retain registered users from tests
 	 */
-	@Test(priority=1)
+	@Test
 	void register_shouldCreateUserAndReturn201() {
 
 		 Response response = RestAssured.given()
@@ -52,7 +52,7 @@ public class ApiRESTAssuredIT {
 	/**
 	 * Test of a pack, if separated or modified the database could retain registered users from tests
 	 */
-	@Test(priority=2)
+	@Test
 	void login_shouldAuthenticateAndReturn200() {
 		
 		 Response response = RestAssured.given()
@@ -68,7 +68,7 @@ public class ApiRESTAssuredIT {
 	/**
 	 * Test of a pack, if separated or modified the database could retain registered users from tests
 	 */
-	@Test(priority=2)
+	@Test
 	void invalidate_GivenAuthData_ThenReturnWithInvalidatedToken() {
 
 		Response response = RestAssured.given()
@@ -84,7 +84,7 @@ public class ApiRESTAssuredIT {
 	/**
 	 * Test of a pack, if separated or modified the database could retain registered users from tests
 	 */
-	@Test(priority=3)
+	@Test
 	void deleteHard_shouldDeleteUserIfTokenBearerIsAdmin() {
 		
 		 Response response = RestAssured.given()

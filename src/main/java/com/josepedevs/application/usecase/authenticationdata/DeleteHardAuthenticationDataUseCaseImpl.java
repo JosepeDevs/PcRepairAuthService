@@ -1,6 +1,7 @@
 package com.josepedevs.application.usecase.authenticationdata;
 
 import com.josepedevs.application.service.JwtMasterValidator;
+import com.josepedevs.domain.exceptions.TokenNotValidException;
 import com.josepedevs.domain.repository.AuthenticationDataRepository;
 import com.josepedevs.domain.request.DeleteHardUserRequest;
 import com.josepedevs.domain.usecase.DeleteHardAuthenticationDataUseCase;
@@ -18,10 +19,12 @@ public class DeleteHardAuthenticationDataUseCaseImpl implements DeleteHardAuthen
 
 	@Override
 	public Boolean apply(DeleteHardUserRequest deleteHardUserRequest) {
-		jwtMasterValidator.isAdminTokenCompletelyValidated(deleteHardUserRequest.getJwtToken());
+		final var isValidToken = jwtMasterValidator.isAdminTokenCompletelyValidated(deleteHardUserRequest.getJwtToken());
+		if(!isValidToken) {
+			throw new TokenNotValidException("The token is not valid, might be because it expired, did not have the required role or was invalidated.");
+		}
 		final var wasDeletedCorrectly = repository.deleteHard(deleteHardUserRequest.getUserId());
-
-		if( wasDeletedCorrectly ) {
+		if(wasDeletedCorrectly) {
 			log.info("User was deleted correctly.");
 			return true;
 		}

@@ -10,7 +10,7 @@ public interface AuthenticationDataRepository {
 	
 	AuthenticationData registerUserAuthData(AuthenticationData authData, String jwtToken);
     
-	boolean login(AuthenticationData authData, String jwtToken);
+	boolean updateToken(AuthenticationData authData, String jwtToken);
     
     Optional<AuthenticationData> findByUsername(String username);
     

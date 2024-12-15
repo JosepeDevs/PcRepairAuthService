@@ -1,13 +1,12 @@
 package com.josepedevs.infra.input.rest.authenticationdata;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-
-import org.apache.http.HttpStatus;
-import org.testng.annotations.Test;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 
 public class RestAssuredExamplesIT {
 	

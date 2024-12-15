@@ -19,7 +19,7 @@ import java.util.UUID;
 @Table(name="authentication_data")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Data
 public class AuthenticationDataEntity implements UserDetails{
 

@@ -61,7 +61,7 @@ class LoginAuthenticationDataUseCaseImplTest {
 
             when(getUserService.findByUsername(authRequest.getUsername())).thenReturn(authData);
             when(jwtService.generateToken(any(), eq(authData))).thenReturn(authData.getCurrentToken());
-            when(repository.login(authData, authData.getCurrentToken())).thenReturn(true);
+            when(repository.updateToken(authData, authData.getCurrentToken())).thenReturn(true);
 
             // Act
             final var actual = useCase.apply(authRequest);
@@ -79,7 +79,7 @@ class LoginAuthenticationDataUseCaseImplTest {
         final var request = AuthenticationRequest.builder().username(authData.getUsername()).psswrd(authData.getPassword()).build();
         when(getUserService.findByUsername(authData.getUsername())).thenReturn(authData);
         when(jwtService.generateToken(any(), eq(authData))).thenReturn(authData.getCurrentToken());
-        when(repository.login(authData, authData.getCurrentToken())).thenReturn(false);
+        when(repository.updateToken(authData, authData.getCurrentToken())).thenReturn(false);
 
         // Act & Assert
         assertThrows(TokenNotValidException.class, () -> {

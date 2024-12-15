@@ -38,15 +38,20 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
         return 	userJpaRepository.findByUsername(username).map(mapper::map);
 	}
 
-	@Override 
-	public boolean login(AuthenticationData authData, String jwtToken) {
-		authData.setCurrentToken(jwtToken);
-        final var savedUser = userJpaRepository.save(mapper.map(authData));
-        if (savedUser.getCurrentToken().equals(jwtToken)) {
+	public boolean updateToken(AuthenticationData authData, String jwtToken) {
+        final var optUser = userJpaRepository.findById(authData.getIdUser());
+		if(optUser.isEmpty()) {
+			log.warn("User not found.");
+			return false;
+		}
+		final var authDataToBeSaved = authData.toBuilder().currentToken(jwtToken).build();
+		final var savedUser = userJpaRepository.save(mapper.map(authDataToBeSaved));
+		final var updatedSuccessfully=  savedUser.getCurrentToken().equals(jwtToken);
+        if (updatedSuccessfully) {
 			log.info("User logged in correctly.");
         	return true;
         }
-		log.info("Login rejected.");
+		log.warn("Login rejected.");
 		return false;
 	}
 
@@ -54,8 +59,8 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
 	public boolean patchPassword(AuthenticationData authData, String digestedPsswrd) {
 		final var savedAuthData = authData.toBuilder().psswrd(digestedPsswrd).build();
 		final var savedUser = mapper.map(
-				userJpaRepository.save(
-						mapper.map(savedAuthData)));
+													userJpaRepository.save(
+															mapper.map(savedAuthData)));
         if( savedUser == authData) {
 			log.info("Password did not change.");
 			return false;
@@ -66,10 +71,10 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
 
 	@Override
 	public boolean patchRole(AuthenticationData authData, String role) {
-		authData.setCurrentToken(role);
+		final var savedAuthData = authData.toBuilder().role(role).build();
         final var savedUser = mapper.map(
-				userJpaRepository.save(
-						mapper.map(authData)));
+												userJpaRepository.save(
+														mapper.map(savedAuthData)));
         if( savedUser == authData) {
 			log.error("Role was not updated.");
         	return false;
@@ -91,8 +96,8 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
 	public boolean invalidateToken(AuthenticationData authData) {
 		final var newAuthData = authData.toBuilder().currentToken("invalidated").build();
         final var savedUser = mapper.map(
-			userJpaRepository.save(
-					mapper.map(newAuthData)));
+													userJpaRepository.save(
+															mapper.map(newAuthData)));
 
 		if(Objects.equals(savedUser.getCurrentToken(), authData.getCurrentToken())) {
 			log.error("token was not invalidated.");
