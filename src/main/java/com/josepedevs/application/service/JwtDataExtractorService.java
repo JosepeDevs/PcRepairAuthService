@@ -4,8 +4,7 @@ import com.josepedevs.domain.entity.valueobjects.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -17,29 +16,24 @@ import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class JwtDataExtractorService {
 	
-	JwtIssuerService jwtIssuerService;
-	private final Logger logger = LoggerFactory.getLogger(JwtDataExtractorService.class);
+	private final JwtIssuerService jwtIssuerService;
 
 	/**
-	 * parse a JSON Web Token (JWT) and extract all its claims
+	 * Mount the parses with the secret key , the parser then will extract all claims from JWT
 	 * @param jwtToken
 	 * @return Claims (all the payLoad/Body)
 	 */
 	public Claims extractAllClaims(String jwtToken) {
 	    SecretKey secretSigningKey = jwtIssuerService.getSecretSigningKey();
-
-	    //montamos el parser, añadiendo la secret key
 		final var  jwsParser = Jwts .parser().verifyWith(secretSigningKey).build();
-	    // el parser, ya con la key, extraerá los Claims del JWT
 		final var  jwsClaims = jwsParser.parseSignedClaims(jwtToken);
-	    //extraemos de los claims el payload
-	    logger.trace("Extracting all claims from token.");
+	    log.trace("Extracting all claims from token.");
 		return jwsClaims.getPayload();
 	}
-	
-	
+
 	/**
 	 * //Function from java.util returns type T and take Claims type as parameter and returns type T
 	 * @param <T>
@@ -49,7 +43,7 @@ public class JwtDataExtractorService {
 	 */
 	public <T> T extractClaim(String jwtToken, Function<Claims, T> claimsTypeResolver) {
 		final var  allClaims = extractAllClaims(jwtToken);
-	    logger.trace("Extracting specific type of claim from token");
+	    log.trace("Extracting specific type of claim from token");
 		return claimsTypeResolver.apply(allClaims);
 	}
 
@@ -59,7 +53,7 @@ public class JwtDataExtractorService {
 	 * @return
 	 */
 	public String extractUsername(String jwtToken) {
-	    logger.trace("Extracting subject");
+	    log.trace("Extracting subject");
 		return extractClaim(jwtToken, Claims::getSubject);
 	}
 	
@@ -75,37 +69,37 @@ public class JwtDataExtractorService {
         // Check if the retrieved list is not null and contains only Role instances
         if (rolesRaw == null || ! rolesRaw.stream().allMatch(obj -> obj instanceof Role)) {
         	// if null or if not all objects in list are Roles return empty map (no extra claims will be added)
-    	    logger.error("Not all claims of Roles were of type roles");
+    	    log.error("Not all claims of Roles were of type roles");
         	return new HashMap<>();
-        } else {
-        	// Perform the unchecked cast safely knowing all elements are Role instances
-			final var  roles = (List<Role>) rolesRaw;
-        	Map<String,Object> extraClaims = new HashMap<>();
-			final var  rolesSB = new StringBuilder();
-			final var  permissionsSB = new StringBuilder();
-        	//builds something like "User, Editor," includes a comma always at the end too
-        	for (Role role : roles){
-        		rolesSB.append(role.toString());
-        		rolesSB.append(", ");
-        		permissionsSB.append(role.getPermissions());
-        		permissionsSB.append(", ");
-        	};
-        	//remove the comma in the last position
-        	int lastRoleIndex = rolesSB.length() - 1;
-        	if (lastRoleIndex >= 0) {
-        		rolesSB.deleteCharAt(lastRoleIndex);
-        	}
-        	//remove the comma in the last position
-        	int lastPermissionIndex = permissionsSB.length() - 1;
-        	if (lastPermissionIndex >= 0) {
-        		permissionsSB.deleteCharAt(lastPermissionIndex);
-        	}
-    	    logger.trace("The user was assigned the following roles: "+ rolesSB.toString());
-    	    logger.trace("The user was assigned the following permissions: "+ permissionsSB.toString());
-        	extraClaims.put("Roles", rolesSB.toString());
-        	extraClaims.put("Permissions", permissionsSB.toString());
-        	return extraClaims;
-        }	
+        }
+		// Perform the unchecked cast safely knowing all elements are Role instances
+		final var  roles = (List<Role>) rolesRaw;
+		Map<String,Object> extraClaims = new HashMap<>();
+		final var  rolesSB = new StringBuilder();
+		final var  permissionsSB = new StringBuilder();
+		//builds something like "User, Editor," includes a comma always at the end too
+		for (Role role : roles){
+			rolesSB.append(role.toString());
+			rolesSB.append(", ");
+			permissionsSB.append(role.getPermissions());
+			permissionsSB.append(", ");
+		}
+		//remove the comma in the last position
+		int lastRoleIndex = rolesSB.length() - 1;
+		if (lastRoleIndex >= 0) {
+			rolesSB.deleteCharAt(lastRoleIndex);
+		}
+		//remove the comma in the last position
+		int lastPermissionIndex = permissionsSB.length() - 1;
+		if (lastPermissionIndex >= 0) {
+			permissionsSB.deleteCharAt(lastPermissionIndex);
+		}
+		log.trace("The user was assigned the following roles: {} ", rolesSB);
+		log.trace("The user was assigned the following permissions: {}", permissionsSB);
+		extraClaims.put("Roles", rolesSB.toString());
+		extraClaims.put("Permissions", permissionsSB.toString());
+		return extraClaims;
+
     }
 	
 	/**
@@ -114,9 +108,8 @@ public class JwtDataExtractorService {
 	 * @return Claims:Expiration
 	 */
 	protected Date extractExpiration(String jwtToken) {
-	    logger.trace("Checking if token was expired");
+	    log.trace("Checking if token was expired");
 		return extractClaim(jwtToken, Claims::getExpiration);
 	}
-	
 
 }

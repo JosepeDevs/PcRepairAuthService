@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
-public class ApiRESTAssuredTest {
+public class ApiRESTAssuredIT {
 
 	private static final String REGISTER_URL = "http://localhost:7777/authmanager/api/v1/noauth/register";
 	private static final String LOGIN_URL = "http://localhost:6666/authmanager/api/v1/noauth/authenticate";

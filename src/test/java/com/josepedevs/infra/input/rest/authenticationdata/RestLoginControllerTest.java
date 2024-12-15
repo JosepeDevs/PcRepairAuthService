@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 @RequestMapping("api/v1/noauth")
 
 @ExtendWith(MockitoExtension.class)
-class RestLoginControllerTest {
+public class RestLoginControllerTest {
 
 	@InjectMocks
 	private RestLoginController controller;

@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class RestUpdateRoleControllerTest {
+public class RestUpdateRoleControllerTest {
 	
 	@InjectMocks
 	private RestUpdateRoleController controller;

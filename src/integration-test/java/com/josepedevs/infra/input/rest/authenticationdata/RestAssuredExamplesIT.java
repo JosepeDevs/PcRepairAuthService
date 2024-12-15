@@ -9,7 +9,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-public class RestAssuredExamples {
+public class RestAssuredExamplesIT {
 	
 	
 	final private String urlConPlaceHolders="localhost:7777/personmanager/persons/{idUser}";

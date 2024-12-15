@@ -6,8 +6,7 @@ import com.josepedevs.domain.entity.AuthenticationData;
 import com.josepedevs.domain.exceptions.RequestNotPermittedException;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +19,11 @@ import java.util.List;
 @RequestMapping("api/v1/admin")
 @RestController
 @AllArgsConstructor
+@Slf4j
 public class RestGetAllRegisteredController {
 	
 	private final GetAllAuthenticationDataUseCaseImpl useCase;
-	private final Logger logger = LoggerFactory.getLogger(RestGetAllRegisteredController.class);
-	
+
 	@GetMapping("/getall")
 	@Bulkhead(name="getAllBH",fallbackMethod="getFallbackRegisteredBulkHead")
 	public ResponseEntity<List<AuthenticationData>> getAllRegistered (@RequestHeader("Authorization") String jwtToken){
@@ -33,8 +32,7 @@ public class RestGetAllRegisteredController {
 	}
 	
 	public ResponseEntity<String> getFallbackRegisteredBulkHead (RequestNotPermittedException exception){
-        logger.info("Bulkhead has been applied, no further calls are getting accepted");
-
+        log.info("Bulkhead has been applied, no further calls are getting accepted");
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                 .body("Too many requests : No further request will be accepted. Please try again in some minutes ");
 
