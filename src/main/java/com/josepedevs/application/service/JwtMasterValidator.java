@@ -21,7 +21,7 @@ public class JwtMasterValidator {
     public boolean isAdminTokenCompletelyValidated(String jwtToken) {
         return (
                 !jwtExpirationValidator.isTokenExpired(jwtToken) &&
-                !jwtInvalidatedValidator.isTokenInvalidated(jwtToken) &&
+                jwtInvalidatedValidator.isTokenInvalidated(jwtToken) &&
                 jwtRoleValidator.isTokenFromAdmin(jwtToken)
         );
     }

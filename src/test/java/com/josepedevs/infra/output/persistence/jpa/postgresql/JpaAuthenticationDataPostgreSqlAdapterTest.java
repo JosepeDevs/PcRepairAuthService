@@ -1,8 +1,7 @@
-package com.josepedevs.infra.input.rest.authenticationdata;
+package com.josepedevs.infra.output.persistence.jpa.postgresql;
 
 import com.josepedevs.domain.entity.AuthenticationData;
 import com.josepedevs.domain.entity.valueobjects.Role;
-import com.josepedevs.infra.output.persistence.jpa.postgresql.JpaAuthenticationDataPostgreSqlAdapter;
 import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata.entity.AuthenticationDataEntity;
 import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata.mapper.JpaAuthenticationDataMapper;
 import com.josepedevs.infra.output.persistence.jpa.postgresql.authenticationdata.repository.JpaAuthenticationDataRepository;
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class JpaAuthenticationDataPostgreSqlAdapterIT {
+class JpaAuthenticationDataPostgreSqlAdapterTest {
 
 	@InjectMocks
 	private JpaAuthenticationDataPostgreSqlAdapter adapter;
@@ -210,7 +209,7 @@ class JpaAuthenticationDataPostgreSqlAdapterIT {
 	}
 
 	@Test
-	void patchRole_SavedCorrectly_ThenReturnsTrue() {
+	void patchRole_SavedCorrectly_ThenReturnsAuthData() {
 		final var authData = easyRandom.nextObject(AuthenticationData.class);
 		final var newRole = this.easyRandom.nextObject(Role.class);
 
@@ -224,19 +223,19 @@ class JpaAuthenticationDataPostgreSqlAdapterIT {
 				.active(authData.isActive())
 				.build();
 
-		final var authWithNewPassword = authData.toBuilder().role(newRole.toString()).build();
+		final var authWithNewRole = authData.toBuilder().role(newRole.toString()).build();
 
-		when(mapper.map(authEntity)).thenReturn(authWithNewPassword);
+		when(mapper.map(authEntity)).thenReturn(authWithNewRole);
 		when(repository.save(authEntity)).thenReturn(authEntity);
-		when(mapper.map(authWithNewPassword)).thenReturn(authEntity);
+		when(mapper.map(authWithNewRole)).thenReturn(authEntity);
 
 		final var actual = this.adapter.patchRole(authData, newRole.toString());
 
-		assertTrue(actual);
+		assertEquals(authWithNewRole, actual);
 	}
 
 	@Test
-	void patchRole_GivenFailedUpdate_ThenReturnsFalse() {
+	void patchRole_GivenFailedUpdate_ThenReturnsAuthData() {
 		final var authData = easyRandom.nextObject(AuthenticationData.class);
 		final var authEntity = AuthenticationDataEntity.builder()
 				.idUser(authData.getIdUser())
@@ -248,14 +247,13 @@ class JpaAuthenticationDataPostgreSqlAdapterIT {
 				.active(authData.isActive())
 				.build();
 
-
 		when(mapper.map(authEntity)).thenReturn(authData);
 		when(repository.save(authEntity)).thenReturn(authEntity);
 		when(mapper.map(authData)).thenReturn(authEntity);
 
 		final var actual = this.adapter.patchRole(authData, authData.getRole());
 
-		assertFalse(actual);
+		assertEquals(authData, actual);
 	}
 
 	@Test
@@ -337,17 +335,88 @@ class JpaAuthenticationDataPostgreSqlAdapterIT {
 	}
 
 	@Test
-	void deleteHard() {
-		//TODO
+	void deleteHard_GivenDeleted_ThenReturnsTrue() {
+		final var authData = easyRandom.nextObject(AuthenticationData.class).toBuilder().currentToken("invalidated").build();
+
+		when(this.adapter.findById(authData.getIdUser())).thenReturn(Optional.empty());
+
+		final var actual = this.adapter.deleteHard(authData.getIdUser());
+
+		assertTrue(actual);
 	}
 	@Test
-	void findById() {
-		//TODO
-	}
-	@Test
-	void findByEmail() {
-		//TODO
+	void deleteHard_GivenFailedDeleted_ThenReturnsFalse() {
+		final var authData = easyRandom.nextObject(AuthenticationData.class).toBuilder().currentToken("invalidated").build();
+
+		when(this.adapter.findById(authData.getIdUser())).thenReturn(Optional.of(authData));
+
+		final var actual = this.adapter.deleteHard(authData.getIdUser());
+
+		assertFalse(actual);
 	}
 
+	@Test
+	void findById_GivenFoundAuthData_ThenReturnsOptional() {
+		final var authData = easyRandom.nextObject(AuthenticationData.class).toBuilder().currentToken("invalidated").build();
+		final var authEntity = AuthenticationDataEntity.builder()
+				.idUser(authData.getIdUser())
+				.email(authData.getEmail())
+				.psswrd(authData.getPsswrd())
+				.username(authData.getUsername())
+				.role(authData.getRole())
+				.currentToken(authData.getCurrentToken())
+				.active(authData.isActive())
+				.build();
+
+		when(this.repository.findById(authData.getIdUser())).thenReturn(Optional.of(authEntity));
+		when(this.mapper.map(authEntity)).thenReturn(authData);
+
+		final var actual = this.adapter.findById(authData.getIdUser());
+
+		assertEquals(Optional.of(authData), actual);
+	}
+
+	@Test
+	void findById_GivenNotFoundAuthData_ThenReturnsEmptyOptional() {
+		final var authData = easyRandom.nextObject(AuthenticationData.class).toBuilder().currentToken("invalidated").build();
+
+		when(this.repository.findById(authData.getIdUser())).thenReturn(Optional.empty());
+
+		final var actual = this.adapter.findById(authData.getIdUser());
+
+		assertEquals(Optional.empty(), actual);
+	}
+
+	@Test
+	void findByEmail_GivenFoundAuthData_ThenReturnsOptional() {
+		final var authData = easyRandom.nextObject(AuthenticationData.class).toBuilder().currentToken("invalidated").build();
+		final var authEntity = AuthenticationDataEntity.builder()
+				.idUser(authData.getIdUser())
+				.email(authData.getEmail())
+				.psswrd(authData.getPsswrd())
+				.username(authData.getUsername())
+				.role(authData.getRole())
+				.currentToken(authData.getCurrentToken())
+				.active(authData.isActive())
+				.build();
+
+		when(this.repository.findByEmail(authData.getEmail())).thenReturn(Optional.of(authEntity));
+		when(this.mapper.map(authEntity)).thenReturn(authData);
+
+		final var actual = this.adapter.findByEmail(authData.getEmail());
+
+		assertEquals(Optional.of(authData), actual);
+	}
+
+	@Test
+	void findByEmail_GivenNotFoundAuthData_ThenReturnsEmptyOptional() {
+		final var authData = easyRandom.nextObject(AuthenticationData.class).toBuilder().currentToken("invalidated").build();
+
+		when(this.repository.findByEmail(authData.getEmail())).thenReturn(Optional.empty());
+
+		final var actual = this.adapter.findByEmail(authData.getEmail());
+
+		assertEquals(Optional.empty(), actual);
+	}
 
 }

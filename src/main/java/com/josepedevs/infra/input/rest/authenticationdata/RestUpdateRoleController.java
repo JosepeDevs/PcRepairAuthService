@@ -2,7 +2,6 @@ package com.josepedevs.infra.input.rest.authenticationdata;
 
 import com.josepedevs.application.usecase.authenticationdata.PatchAuthenticationDataRoleUseCaseImpl;
 import com.josepedevs.domain.request.PatchUserRoleRequest;
-import com.josepedevs.infra.input.rest.authenticationdata.mapper.RestAuthenticationDataMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,13 +24,13 @@ public class RestUpdateRoleController {
 		//"Bearer " are 7 digits, with this we get in a string the token value and replace white spaces, just in case
 		jwtToken = jwtToken.substring(7).replace (" ","");
 		boolean roleChanged = patchAuthenticationDataRoleUseCaseImpl.apply(request.toBuilder().jwtToken(jwtToken).build());
-		if(	roleChanged ) {
+		if(roleChanged) {
 			log.info("Role updated correctly.");
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(true);
-		} else {
-			log.info("Role was not updated.");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
+		log.info("Role was not updated.");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+
 	}
 	
 }

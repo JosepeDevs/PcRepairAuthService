@@ -7,15 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class AuthManagerAppTest {
 
 	@Autowired
-	private RestLoginController controler;
+	private RestLoginController controller;
 
 	@Autowired
 	private LoginAuthenticationDataUseCaseImpl useCase;
@@ -25,7 +28,7 @@ class AuthManagerAppTest {
 
 	@Test
 	void contextLoads() {
-		assertNotNull(controler);
+		assertNotNull(controller);
 		assertNotNull(useCase);
 		assertNotNull(adapter);
 	}

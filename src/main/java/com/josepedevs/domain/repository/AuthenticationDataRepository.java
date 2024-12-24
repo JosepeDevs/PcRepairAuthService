@@ -23,8 +23,8 @@ public interface AuthenticationDataRepository {
 	boolean isTokenInvalidated(String username);
     
 	boolean patchPassword(AuthenticationData authData, String digestedPsswrd);
-	
-	boolean patchRole(AuthenticationData authData, String role);
+
+	AuthenticationData patchRole(AuthenticationData authData, String role);
 	
 	List<AuthenticationData> getAll();
 	

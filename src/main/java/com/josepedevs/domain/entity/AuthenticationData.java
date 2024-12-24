@@ -1,7 +1,7 @@
 package com.josepedevs.domain.entity;
 
 
-import com.josepedevs.domain.entity.valueobjects.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder(toBuilder = true)
 public class AuthenticationData implements UserDetails {
 
@@ -35,17 +36,6 @@ public class AuthenticationData implements UserDetails {
     private String 	currentToken;
 
     private boolean	active;
-
-    public AuthenticationData(UUID idUser, String username, String email, String psswrd,
-                                    Role role, String currentToken, boolean active) {
-        this.idUser = idUser;
-        this.username = username;
-        this.email = email;
-        this.psswrd = psswrd;
-        this.role = role.name();
-        this.currentToken = currentToken;
-        this.active = active;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -9,10 +9,10 @@ import org.mapstruct.*;
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public interface JpaAuthenticationDataMapper {
+public abstract class JpaAuthenticationDataMapper {
 
-    AuthenticationDataEntity map(AuthenticationData data);
+    public abstract AuthenticationDataEntity map(AuthenticationData data);
 
-    AuthenticationData map(AuthenticationDataEntity data);
+    public abstract AuthenticationData map(AuthenticationDataEntity data);
 
 }

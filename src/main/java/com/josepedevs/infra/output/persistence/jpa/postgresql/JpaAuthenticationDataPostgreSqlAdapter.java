@@ -70,17 +70,13 @@ public class JpaAuthenticationDataPostgreSqlAdapter implements AuthenticationDat
 	}
 
 	@Override
-	public boolean patchRole(AuthenticationData authData, String role) {
+	public AuthenticationData patchRole(AuthenticationData authData, String role) {
 		final var savedAuthData = authData.toBuilder().role(role).build();
         final var savedUser = mapper.map(
 												userJpaRepository.save(
 														mapper.map(savedAuthData)));
-        if( savedUser == authData) {
-			log.error("Role was not updated.");
-        	return false;
-        }
 		log.info("Role updated corretly.");
-		return true;
+		return savedUser;
 	}
 
 	@Override
