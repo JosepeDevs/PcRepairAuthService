@@ -1,7 +1,7 @@
 # DEFAULT /PREDETERMINADO si no se especifica entorno
 spring:
   application:
-    name: AuthManager
+    name: AUTHMANAGER
   banner:
     location: JPD.txt
   datasource:
@@ -54,8 +54,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-     defaultZone: http://${EUREKA_INSTANCE_HOSTNAME}:${EUREKA_PORT}/eureka
-     
+      defaultZone: http://${EUREKA_INSTANCE_HOSTNAME:localhost}:${EUREKA_PORT:9876}/eureka
 resilience4j:
   bulkhead:
     instances:

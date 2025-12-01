@@ -47,7 +47,23 @@
 		<swagger-annotations.version>2.2.25</swagger-annotations.version>
 		<logbook.version>3.10.0</logbook.version>
 		<spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+		<spring-cloud-dependencies.version>2025.1.0</spring-cloud-dependencies.version>
 	</properties>
+
+
+	<!-- Spring Cloud BOM -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud-dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	
 	<dependencies>
 		<dependency>
