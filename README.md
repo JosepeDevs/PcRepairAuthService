@@ -1,5 +1,7 @@
 # Authentication service
 
+## Extensively documented in https://app.devin.ai/wiki/JosepeDevs/PcRepairAuthService
+
 ## About this microservice 
 - Custom JWT generation and validation to allow access to endpoints (secured by path and/or role)
 - Invalidation of tokens
